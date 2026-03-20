@@ -862,91 +862,255 @@
 
     <!-- Training Materials Tab (formerly FAQ) -->
     <div class="pane" id="training-pane" style="display:none;">
-      <div style="max-width:700px;">
+      <div style="max-width:1100px;">
         <h2 style="font-size:15px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#2e7d32;border-bottom:2px solid #c8e6c9;padding-bottom:8px;margin-bottom:20px;">Training Materials</h2>
-        <p style="font-size:12px;color:#888;margin-bottom:20px;font-style:italic;">Click any topic below to open the reference document.</p>
 
-        <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;">
 
-          <a href="https://docs.google.com/document/d/1qyla78sbpBL9gaZsGaH72aptExNCn28-Spj3UMzyGXQ/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-              <svg viewBox="0 0 64 36" width="36" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="8" width="40" height="22" rx="2" fill="#2e7d32"/>
-                <rect x="41" y="14" width="18" height="16" rx="2" fill="#1b5e20"/>
-                <polygon points="41,14 59,14 53,8 41,8" fill="#388e3c"/>
-                <rect x="44" y="16" width="10" height="8" rx="1" fill="#81c784" opacity="0.5"/>
-                <circle cx="12" cy="30" r="5" fill="#111"/>
-                <circle cx="12" cy="30" r="2.5" fill="#888"/>
-                <circle cx="50" cy="30" r="5" fill="#111"/>
-                <circle cx="50" cy="30" r="2.5" fill="#888"/>
-              </svg>
-            </div>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:#111;">Direct Service VS Vanline VS Broker</div>
-            </div>
-            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-          </a>
+          <!-- LEFT: Training Links -->
+          <div style="flex:1;min-width:340px;">
+            <p style="font-size:12px;color:#888;margin-bottom:16px;font-style:italic;">Click any topic below to open the reference document.</p>
 
-          <a href="https://docs.google.com/document/d/1__gVkWl3H6NLh6ODWU3lkrhZyW-6Ul0pgEsTXfKql3E/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
-                <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                <circle cx="18" cy="18" r="5" fill="#1b5e20"/>
-                <text x="18" y="22" text-anchor="middle" font-size="7" fill="#fff" font-family="Georgia,serif" font-weight="bold">✓</text>
-              </svg>
-            </div>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Pitch</div>
-            </div>
-            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-          </a>
+            <div style="display:flex;flex-direction:column;gap:10px;">
 
-          <a href="https://docs.google.com/document/d/1bqnyuwoE3ELXN3mEX2eCEbpyngNsfHTe2OCzAcwGiTw/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
-                <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-              </svg>
-            </div>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Intro &amp; Transition to Video Call</div>
-            </div>
-            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-          </a>
+              <a href="https://docs.google.com/document/d/1qyla78sbpBL9gaZsGaH72aptExNCn28-Spj3UMzyGXQ/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <svg viewBox="0 0 64 36" width="36" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="8" width="40" height="22" rx="2" fill="#2e7d32"/>
+                    <rect x="41" y="14" width="18" height="16" rx="2" fill="#1b5e20"/>
+                    <polygon points="41,14 59,14 53,8 41,8" fill="#388e3c"/>
+                    <rect x="44" y="16" width="10" height="8" rx="1" fill="#81c784" opacity="0.5"/>
+                    <circle cx="12" cy="30" r="5" fill="#111"/>
+                    <circle cx="12" cy="30" r="2.5" fill="#888"/>
+                    <circle cx="50" cy="30" r="5" fill="#111"/>
+                    <circle cx="50" cy="30" r="2.5" fill="#888"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:#111;">Direct Service VS Vanline VS Broker</div>
+                </div>
+                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+              </a>
 
-          <a href="https://experience.allmysons.com/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="18" height="18" rx="3" fill="#2e7d32"/>
-                <polygon points="10,7 17,12 10,17" fill="#fff"/>
-              </svg>
-            </div>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:#111;">Brag Book</div>
-            </div>
-            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-          </a>
+              <a href="https://docs.google.com/document/d/1__gVkWl3H6NLh6ODWU3lkrhZyW-6Ul0pgEsTXfKql3E/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
+                    <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                    <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                    <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                    <circle cx="18" cy="18" r="5" fill="#1b5e20"/>
+                    <text x="18" y="22" text-anchor="middle" font-size="7" fill="#fff" font-family="Georgia,serif" font-weight="bold">✓</text>
+                  </svg>
+                </div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Pitch</div>
+                </div>
+                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+              </a>
 
-          <div style="background:#fff;border:2px dashed #c8e6c9;border-radius:10px;padding:16px 20px;text-align:center;color:#bbb;font-size:12px;font-style:italic;">
-            + More training materials coming soon
-          </div>
+              <a href="https://docs.google.com/document/d/1bqnyuwoE3ELXN3mEX2eCEbpyngNsfHTe2OCzAcwGiTw/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
+                    <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                    <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                    <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Intro &amp; Transition to Video Call</div>
+                </div>
+                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+              </a>
 
-        </div>
+              <a href="https://experience.allmysons.com/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#2e7d32"/>
+                    <polygon points="10,7 17,12 10,17" fill="#fff"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:#111;">Brag Book</div>
+                </div>
+                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+              </a>
+
+              <div style="background:#fff;border:2px dashed #c8e6c9;border-radius:10px;padding:16px 20px;text-align:center;color:#bbb;font-size:12px;font-style:italic;">
+                + More training materials coming soon
+              </div>
+
+            </div>
+          </div><!-- /left -->
+
+          <!-- RIGHT: Average Weight Calculator -->
+          <div style="width:340px;min-width:300px;">
+            <div style="background:#fff;border:2px solid #2e7d32;border-radius:12px;padding:18px 20px;">
+              <div style="font-size:14px;font-weight:800;color:#1b5e20;margin-bottom:4px;">⚖️ Average Weight on Home</div>
+              <div style="font-size:11px;color:#888;margin-bottom:14px;">Select home type → Adjust years → Get estimated weight</div>
+
+              <!-- Home Type Buttons -->
+              <div style="font-size:10px;font-weight:800;color:#2e7d32;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Home Type</div>
+              <div id="weightHomeGrid" style="display:flex;flex-direction:column;gap:5px;margin-bottom:16px;max-height:280px;overflow-y:auto;padding-right:4px;"></div>
+
+              <!-- Years Slider -->
+              <div id="weightYearsSection" style="display:none;margin-bottom:14px;">
+                <div style="font-size:10px;font-weight:800;color:#2e7d32;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Years Lived in Home</div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <input type="range" id="weightYearsSlider" min="0" max="30" value="0" oninput="updateWeight()" style="flex:1;accent-color:#2e7d32;height:5px;">
+                  <div id="weightYearsLabel" style="min-width:52px;text-align:center;background:#1b5e20;color:#fff;border-radius:6px;padding:5px 8px;font-size:13px;font-weight:900;font-family:Arial,sans-serif;">0 yrs</div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:8px;color:#aaa;margin-top:2px;padding:0 2px;">
+                  <span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span>
+                </div>
+              </div>
+
+              <!-- Result -->
+              <div id="weightResultCard" style="display:none;">
+                <div style="background:#e8f5e9;border-radius:8px;padding:12px 14px;text-align:center;margin-bottom:10px;position:relative;">
+                  <div id="weightResultBonusTag" style="display:none;position:absolute;top:6px;right:8px;background:#fff3e0;border:1px solid #ff9800;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:700;color:#e65100;"></div>
+                  <div style="font-size:9px;font-weight:800;color:#2e7d32;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Estimated Weight</div>
+                  <div id="weightResultValue" style="font-size:26px;font-weight:900;color:#1b5e20;font-family:Arial,sans-serif;line-height:1;"></div>
+                  <div style="font-size:10px;color:#555;margin-top:3px;">pounds</div>
+                  <div id="weightResultType" style="font-size:10px;color:#777;margin-top:4px;font-weight:600;"></div>
+                </div>
+                <div id="weightBreakdown" style="font-size:11px;color:#666;line-height:1.6;padding:0 2px;"></div>
+              </div>
+
+            </div>
+          </div><!-- /right -->
+
+        </div><!-- /flex -->
       </div>
     </div><!-- /training-pane -->
+
+<script>
+// ============================================================
+// AVERAGE WEIGHT DATA
+// ============================================================
+const HOME_TYPES = [
+  { label: "Studio Apartment",           low: 1750,  high: 1750  },
+  { label: "1 Bed Apartment",            low: 3000,  high: 3000  },
+  { label: "2 Bed Apartment",            low: 4500,  high: 4500  },
+  { label: "1,200 – 1,500 sqft House",   low: 6000,  high: 6000  },
+  { label: "1,500 – 2,000 sqft House",   low: 6000,  high: 9000  },
+  { label: "2,000 – 2,500 sqft House",   low: 9000,  high: 12000 },
+  { label: "2,500 – 3,000 sqft House",   low: 12000, high: 16000 },
+  { label: "3,000 – 3,500 sqft House",   low: 16000, high: 19000 },
+  { label: "3,500 – 4,000 sqft House",   low: 19000, high: 22000 },
+  { label: "4,000 – 4,500 sqft House",   low: 22000, high: 25000 },
+  { label: "4,500 – 5,000 sqft House",   low: 25000, high: 28000 },
+  { label: "5,000+ sqft House",          low: 28000, high: 31000 }
+];
+
+let selectedHomeIndex = null;
+
+// Build home type buttons
+(function buildHomeButtons() {
+  const grid = document.getElementById('weightHomeGrid');
+  if (!grid) return;
+  HOME_TYPES.forEach((ht, idx) => {
+    const btn = document.createElement('div');
+    btn.className = 'weight-home-btn';
+    btn.dataset.idx = idx;
+    btn.style.cssText = 'background:#fff;border:1.5px solid #c8e6c9;border-radius:6px;padding:7px 10px;font-size:11px;font-weight:600;color:#222;cursor:pointer;transition:all 0.15s;user-select:none;display:flex;justify-content:space-between;align-items:center;';
+    const labelSpan = document.createElement('span');
+    labelSpan.textContent = ht.label;
+    const weightSpan = document.createElement('span');
+    weightSpan.style.cssText = 'font-size:10px;color:#888;font-weight:700;white-space:nowrap;margin-left:8px;';
+    if (ht.low === ht.high) {
+      weightSpan.textContent = ht.low.toLocaleString() + ' lbs';
+    } else {
+      weightSpan.textContent = ht.low.toLocaleString() + '–' + ht.high.toLocaleString();
+    }
+    btn.appendChild(labelSpan);
+    btn.appendChild(weightSpan);
+    btn.onmouseenter = function(){ if(parseInt(this.dataset.idx) !== selectedHomeIndex) this.style.background='#f0faf0'; };
+    btn.onmouseleave = function(){ if(parseInt(this.dataset.idx) !== selectedHomeIndex){ this.style.background='#fff'; this.style.borderColor='#c8e6c9'; this.style.color='#222'; }};
+    btn.onclick = function(){ selectHomeType(idx); };
+    grid.appendChild(btn);
+  });
+})();
+
+function selectHomeType(idx) {
+  selectedHomeIndex = idx;
+
+  // Highlight selected
+  document.querySelectorAll('.weight-home-btn').forEach(b => {
+    if (parseInt(b.dataset.idx) === idx) {
+      b.style.background = '#2e7d32';
+      b.style.borderColor = '#2e7d32';
+      b.style.color = '#fff';
+      b.querySelectorAll('span').forEach(s => s.style.color = '#fff');
+    } else {
+      b.style.background = '#fff';
+      b.style.borderColor = '#c8e6c9';
+      b.style.color = '#222';
+      const spans = b.querySelectorAll('span');
+      if (spans[0]) spans[0].style.color = '#222';
+      if (spans[1]) spans[1].style.color = '#888';
+    }
+  });
+
+  document.getElementById('weightYearsSection').style.display = 'block';
+  document.getElementById('weightResultCard').style.display = 'block';
+  updateWeight();
+}
+
+function updateWeight() {
+  if (selectedHomeIndex === null) return;
+  const ht = HOME_TYPES[selectedHomeIndex];
+  const years = parseInt(document.getElementById('weightYearsSlider').value);
+
+  document.getElementById('weightYearsLabel').textContent = years + ' yr' + (years !== 1 ? 's' : '');
+
+  // 5% increase per 3 years
+  const increments = Math.floor(years / 3);
+  const multiplier = 1 + (increments * 0.05);
+
+  const adjLow = Math.round(ht.low * multiplier);
+  const adjHigh = Math.round(ht.high * multiplier);
+
+  document.getElementById('weightResultType').textContent = ht.label;
+
+  if (adjLow === adjHigh) {
+    document.getElementById('weightResultValue').textContent = adjLow.toLocaleString();
+  } else {
+    document.getElementById('weightResultValue').textContent = adjLow.toLocaleString() + ' – ' + adjHigh.toLocaleString();
+  }
+
+  // Bonus tag
+  const bonusTag = document.getElementById('weightResultBonusTag');
+  if (increments > 0) {
+    bonusTag.style.display = 'block';
+    bonusTag.textContent = '+' + (increments * 5) + '% for ' + years + ' yrs';
+  } else {
+    bonusTag.style.display = 'none';
+  }
+
+  // Breakdown
+  let breakdown = '';
+  if (ht.low === ht.high) {
+    breakdown += 'Base: ' + ht.low.toLocaleString() + ' lbs';
+  } else {
+    breakdown += 'Base: ' + ht.low.toLocaleString() + ' – ' + ht.high.toLocaleString() + ' lbs';
+  }
+  if (increments > 0) {
+    breakdown += '<br>+' + (increments * 5) + '% adjustment (' + increments + ' × 5% per 3 yrs)';
+  }
+  document.getElementById('weightBreakdown').innerHTML = breakdown;
+}
+</script>
+
 
     <!-- Offices with Storage Tab -->
     <div class="pane" id="offices-pane" style="display:none;">
