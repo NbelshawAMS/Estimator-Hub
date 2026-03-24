@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <script>
-     if (sessionStorage.getItem('estimator_hub_auth') !== 'true') {
-       window.location.href = 'index.html';
-     }
-   </script>
+    if (sessionStorage.getItem('estimator_hub_auth') !== 'true') {
+      window.location.href = 'index.html';
+    }
+  </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>All My Sons Estimator Hub</title>
@@ -117,6 +117,10 @@
       <label class="field-label">Number of Trucks</label>
       <select id="numTrucks"><option>1</option><option selected>2</option><option>3</option></select>
     </div>
+    <div class="field">
+      <label class="field-label">Sqft</label>
+      <input type="text" id="sqft" placeholder="e.g. 2,500" oninput="render()">
+    </div>
 
     <div class="section-head">Origin</div>
     <div class="field">
@@ -184,6 +188,27 @@
       <label class="field-label">Number of Days</label>
       <input type="number" id="multidayDays" value="2" min="2" max="7" onchange="updateMultidayBoxes()" style="width:100%;font-size:12px;padding:4px 7px;border:1.5px solid #c8e6c9;border-radius:5px;font-family:inherit;">
       <div id="multidayBoxes" style="margin-top:10px;"></div>
+    </div>
+    <label class="check-row"><input type="checkbox" id="roomsNotMoving" onchange="syncRoomsNotMoving()"> Rooms Not Moving</label>
+    <div id="roomsNotMovingOpts" style="display:none;margin-top:4px;margin-bottom:12px;">
+      <div class="indent">
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmMasterBedroom" onchange="render()"> Master Bedroom</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBedroom2" onchange="render()"> Bedroom 2</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBedroom3" onchange="render()"> Bedroom 3</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBedroom4" onchange="render()"> Bedroom 4</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmKitchen" onchange="render()"> Kitchen</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmLivingRoom" onchange="render()"> Living Room</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmDiningRoom" onchange="render()"> Dining Room</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmOffice" onchange="render()"> Office</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmGarage" onchange="render()"> Garage</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmPatio" onchange="render()"> Patio</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmAttic" onchange="render()"> Attic</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBasement" onchange="render()"> Basement</label>
+        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmOther" onchange="syncRnmOther()"> Other</label>
+        <div id="rnmOtherInput" style="display:none;margin-top:3px;">
+          <input type="text" id="rnmOtherText" placeholder="Specify rooms..." oninput="render()" style="width:100%;font-size:11px;padding:4px 7px;border:1.5px solid #c8e6c9;border-radius:5px;font-family:inherit;">
+        </div>
+      </div>
     </div>
 
     <div class="section-head">Add-ons</div>
@@ -865,259 +890,95 @@
       </div>
     </div><!-- /faq-pane -->
 
-       <!-- Training Materials Tab (formerly FAQ) -->
+    <!-- Training Materials Tab (formerly FAQ) -->
     <div class="pane" id="training-pane" style="display:none;">
-      <div style="max-width:1400px;">
+      <div style="max-width:700px;">
         <h2 style="font-size:15px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#2e7d32;border-bottom:2px solid #c8e6c9;padding-bottom:8px;margin-bottom:20px;">Training Materials</h2>
+        <p style="font-size:12px;color:#888;margin-bottom:20px;font-style:italic;">Click any topic below to open the reference document.</p>
 
-        <div style="display:flex;gap:60px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
 
-          <!-- LEFT: Training Links -->
-          <div style="flex:1;min-width:340px;max-width:550px;">
-            <p style="font-size:12px;color:#888;margin-bottom:16px;font-style:italic;">Click any topic below to open the reference document.</p>
-
-            <div style="display:flex;flex-direction:column;gap:10px;">
-
-              <a href="https://docs.google.com/document/d/1qyla78sbpBL9gaZsGaH72aptExNCn28-Spj3UMzyGXQ/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                  <svg viewBox="0 0 64 36" width="36" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="1" y="8" width="40" height="22" rx="2" fill="#2e7d32"/>
-                    <rect x="41" y="14" width="18" height="16" rx="2" fill="#1b5e20"/>
-                    <polygon points="41,14 59,14 53,8 41,8" fill="#388e3c"/>
-                    <rect x="44" y="16" width="10" height="8" rx="1" fill="#81c784" opacity="0.5"/>
-                    <circle cx="12" cy="30" r="5" fill="#111"/>
-                    <circle cx="12" cy="30" r="2.5" fill="#888"/>
-                    <circle cx="50" cy="30" r="5" fill="#111"/>
-                    <circle cx="50" cy="30" r="2.5" fill="#888"/>
-                  </svg>
-                </div>
-                <div>
-                  <div style="font-size:14px;font-weight:700;color:#111;">Direct Service VS Vanline VS Broker</div>
-                </div>
-                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-              </a>
-
-              <a href="https://docs.google.com/document/d/1__gVkWl3H6NLh6ODWU3lkrhZyW-6Ul0pgEsTXfKql3E/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
-                    <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                    <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                    <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                    <circle cx="18" cy="18" r="5" fill="#1b5e20"/>
-                    <text x="18" y="22" text-anchor="middle" font-size="7" fill="#fff" font-family="Georgia,serif" font-weight="bold">✓</text>
-                  </svg>
-                </div>
-                <div>
-                  <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Pitch</div>
-                </div>
-                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-              </a>
-
-              <a href="https://docs.google.com/document/d/1bqnyuwoE3ELXN3mEX2eCEbpyngNsfHTe2OCzAcwGiTw/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
-                    <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                    <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                    <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
-                  </svg>
-                </div>
-                <div>
-                  <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Intro &amp; Transition to Video Call</div>
-                </div>
-                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-              </a>
-
-              <a href="https://experience.allmysons.com/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
-                onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
-                onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
-                <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#2e7d32"/>
-                    <polygon points="10,7 17,12 10,17" fill="#fff"/>
-                  </svg>
-                </div>
-                <div>
-                  <div style="font-size:14px;font-weight:700;color:#111;">Brag Book</div>
-                </div>
-                <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
-              </a>
-
-              <div style="background:#fff;border:2px dashed #c8e6c9;border-radius:10px;padding:16px 20px;text-align:center;color:#bbb;font-size:12px;font-style:italic;">
-                + More training materials coming soon
-              </div>
-
+          <a href="https://docs.google.com/document/d/1qyla78sbpBL9gaZsGaH72aptExNCn28-Spj3UMzyGXQ/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 64 36" width="36" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="8" width="40" height="22" rx="2" fill="#2e7d32"/>
+                <rect x="41" y="14" width="18" height="16" rx="2" fill="#1b5e20"/>
+                <polygon points="41,14 59,14 53,8 41,8" fill="#388e3c"/>
+                <rect x="44" y="16" width="10" height="8" rx="1" fill="#81c784" opacity="0.5"/>
+                <circle cx="12" cy="30" r="5" fill="#111"/>
+                <circle cx="12" cy="30" r="2.5" fill="#888"/>
+                <circle cx="50" cy="30" r="5" fill="#111"/>
+                <circle cx="50" cy="30" r="2.5" fill="#888"/>
+              </svg>
             </div>
-          </div><!-- /left -->
-
-          <!-- RIGHT: Average Weight Calculator -->
-          <div style="width:340px;min-width:300px;">
-            <div style="background:#fff;border:2px solid #2e7d32;border-radius:12px;padding:18px 20px;">
-              <div style="font-size:14px;font-weight:800;color:#1b5e20;margin-bottom:4px;">⚖️ Average Weight on Home</div>
-              <div style="font-size:11px;color:#888;margin-bottom:14px;">Select home type → Adjust years → Get estimated weight</div>
-
-              <!-- Home Type Buttons -->
-              <div style="font-size:10px;font-weight:800;color:#2e7d32;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Home Type</div>
-              <div id="weightHomeGrid" style="display:flex;flex-direction:column;gap:5px;margin-bottom:16px;max-height:280px;overflow-y:auto;padding-right:4px;"></div>
-
-              <!-- Years Slider -->
-              <div id="weightYearsSection" style="display:none;margin-bottom:14px;">
-                <div style="font-size:10px;font-weight:800;color:#2e7d32;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Years Lived in Home</div>
-                <div style="display:flex;align-items:center;gap:10px;">
-                  <input type="range" id="weightYearsSlider" min="0" max="30" value="0" oninput="updateWeight()" style="flex:1;accent-color:#2e7d32;height:5px;">
-                  <div id="weightYearsLabel" style="min-width:52px;text-align:center;background:#1b5e20;color:#fff;border-radius:6px;padding:5px 8px;font-size:13px;font-weight:900;font-family:Arial,sans-serif;">0 yrs</div>
-                </div>
-                <div style="display:flex;justify-content:space-between;font-size:8px;color:#aaa;margin-top:2px;padding:0 2px;">
-                  <span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span>
-                </div>
-              </div>
-
-              <!-- Result -->
-              <div id="weightResultCard" style="display:none;">
-                <div style="background:#e8f5e9;border-radius:8px;padding:12px 14px;text-align:center;margin-bottom:10px;position:relative;">
-                  <div id="weightResultBonusTag" style="display:none;position:absolute;top:6px;right:8px;background:#fff3e0;border:1px solid #ff9800;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:700;color:#e65100;"></div>
-                  <div style="font-size:9px;font-weight:800;color:#2e7d32;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Estimated Weight</div>
-                  <div id="weightResultValue" style="font-size:26px;font-weight:900;color:#1b5e20;font-family:Arial,sans-serif;line-height:1;"></div>
-                  <div style="font-size:10px;color:#555;margin-top:3px;">pounds</div>
-                  <div id="weightResultType" style="font-size:10px;color:#777;margin-top:4px;font-weight:600;"></div>
-                </div>
-                <div id="weightBreakdown" style="font-size:11px;color:#666;line-height:1.6;padding:0 2px;"></div>
-              </div>
-
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111;">Direct Service VS Vanline VS Broker</div>
             </div>
-          </div><!-- /right -->
+            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+          </a>
 
-        </div><!-- /flex -->
+          <a href="https://docs.google.com/document/d/1__gVkWl3H6NLh6ODWU3lkrhZyW-6Ul0pgEsTXfKql3E/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
+                <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                <circle cx="18" cy="18" r="5" fill="#1b5e20"/>
+                <text x="18" y="22" text-anchor="middle" font-size="7" fill="#fff" font-family="Georgia,serif" font-weight="bold">✓</text>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Pitch</div>
+            </div>
+            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+          </a>
+
+          <a href="https://docs.google.com/document/d/1bqnyuwoE3ELXN3mEX2eCEbpyngNsfHTe2OCzAcwGiTw/edit?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="2" width="18" height="20" rx="2" fill="#2e7d32"/>
+                <rect x="6" y="7" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                <rect x="6" y="11" width="12" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+                <rect x="6" y="15" width="8" height="1.5" rx="0.75" fill="#fff" opacity="0.9"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111;">Sample Estimator Intro &amp; Transition to Video Call</div>
+            </div>
+            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+          </a>
+
+          <a href="https://experience.allmysons.com/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:#fff;border:2px solid #c8e6c9;border-radius:10px;padding:16px 20px;text-decoration:none;color:#111;transition:border-color 0.2s,background 0.2s;"
+            onmouseover="this.style.background='#f0faf0';this.style.borderColor='#2e7d32'"
+            onmouseout="this.style.background='#fff';this.style.borderColor='#c8e6c9'">
+            <div style="width:44px;height:44px;flex-shrink:0;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="3" fill="#2e7d32"/>
+                <polygon points="10,7 17,12 10,17" fill="#fff"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111;">Brag Book</div>
+            </div>
+            <span style="margin-left:auto;font-size:18px;color:#c8e6c9;">›</span>
+          </a>
+
+          <div style="background:#fff;border:2px dashed #c8e6c9;border-radius:10px;padding:16px 20px;text-align:center;color:#bbb;font-size:12px;font-style:italic;">
+            + More training materials coming soon
+          </div>
+
+        </div>
       </div>
     </div><!-- /training-pane -->
 
-<script>
-// ============================================================
-// AVERAGE WEIGHT DATA
-// ============================================================
-const HOME_TYPES = [
-  { label: "Studio Apartment",           low: 1750,  high: 1750  },
-  { label: "1 Bed Apartment",            low: 3000,  high: 3000  },
-  { label: "2 Bed Apartment",            low: 4500,  high: 4500  },
-  { label: "1,200 – 1,500 sqft House",   low: 6000,  high: 6000  },
-  { label: "1,500 – 2,000 sqft House",   low: 6000,  high: 9000  },
-  { label: "2,000 – 2,500 sqft House",   low: 9000,  high: 12000 },
-  { label: "2,500 – 3,000 sqft House",   low: 12000, high: 16000 },
-  { label: "3,000 – 3,500 sqft House",   low: 16000, high: 19000 },
-  { label: "3,500 – 4,000 sqft House",   low: 19000, high: 22000 },
-  { label: "4,000 – 4,500 sqft House",   low: 22000, high: 25000 },
-  { label: "4,500 – 5,000 sqft House",   low: 25000, high: 28000 },
-  { label: "5,000+ sqft House",          low: 28000, high: 31000 }
-];
-
-let selectedHomeIndex = null;
-
-// Build home type buttons
-(function buildHomeButtons() {
-  const grid = document.getElementById('weightHomeGrid');
-  if (!grid) return;
-  HOME_TYPES.forEach((ht, idx) => {
-    const btn = document.createElement('div');
-    btn.className = 'weight-home-btn';
-    btn.dataset.idx = idx;
-    btn.style.cssText = 'background:#fff;border:1.5px solid #c8e6c9;border-radius:6px;padding:7px 10px;font-size:11px;font-weight:600;color:#222;cursor:pointer;transition:all 0.15s;user-select:none;display:flex;justify-content:space-between;align-items:center;';
-    const labelSpan = document.createElement('span');
-    labelSpan.textContent = ht.label;
-    const weightSpan = document.createElement('span');
-    weightSpan.style.cssText = 'font-size:10px;color:#888;font-weight:700;white-space:nowrap;margin-left:8px;';
-    if (ht.low === ht.high) {
-      weightSpan.textContent = ht.low.toLocaleString() + ' lbs';
-    } else {
-      weightSpan.textContent = ht.low.toLocaleString() + '–' + ht.high.toLocaleString();
-    }
-    btn.appendChild(labelSpan);
-    btn.appendChild(weightSpan);
-    btn.onmouseenter = function(){ if(parseInt(this.dataset.idx) !== selectedHomeIndex) this.style.background='#f0faf0'; };
-    btn.onmouseleave = function(){ if(parseInt(this.dataset.idx) !== selectedHomeIndex){ this.style.background='#fff'; this.style.borderColor='#c8e6c9'; this.style.color='#222'; }};
-    btn.onclick = function(){ selectHomeType(idx); };
-    grid.appendChild(btn);
-  });
-})();
-
-function selectHomeType(idx) {
-  selectedHomeIndex = idx;
-
-  // Highlight selected
-  document.querySelectorAll('.weight-home-btn').forEach(b => {
-    if (parseInt(b.dataset.idx) === idx) {
-      b.style.background = '#2e7d32';
-      b.style.borderColor = '#2e7d32';
-      b.style.color = '#fff';
-      b.querySelectorAll('span').forEach(s => s.style.color = '#fff');
-    } else {
-      b.style.background = '#fff';
-      b.style.borderColor = '#c8e6c9';
-      b.style.color = '#222';
-      const spans = b.querySelectorAll('span');
-      if (spans[0]) spans[0].style.color = '#222';
-      if (spans[1]) spans[1].style.color = '#888';
-    }
-  });
-
-  document.getElementById('weightYearsSection').style.display = 'block';
-  document.getElementById('weightResultCard').style.display = 'block';
-  updateWeight();
-}
-
-function updateWeight() {
-  if (selectedHomeIndex === null) return;
-  const ht = HOME_TYPES[selectedHomeIndex];
-  const years = parseInt(document.getElementById('weightYearsSlider').value);
-
-  document.getElementById('weightYearsLabel').textContent = years + ' yr' + (years !== 1 ? 's' : '');
-
-  // 5% increase per 3 years
-  const increments = Math.floor(years / 3);
-  const multiplier = 1 + (increments * 0.05);
-
-  const adjLow = Math.round(ht.low * multiplier);
-  const adjHigh = Math.round(ht.high * multiplier);
-
-  document.getElementById('weightResultType').textContent = ht.label;
-
-  if (adjLow === adjHigh) {
-    document.getElementById('weightResultValue').textContent = adjLow.toLocaleString();
-  } else {
-    document.getElementById('weightResultValue').textContent = adjLow.toLocaleString() + ' – ' + adjHigh.toLocaleString();
-  }
-
-  // Bonus tag
-  const bonusTag = document.getElementById('weightResultBonusTag');
-  if (increments > 0) {
-    bonusTag.style.display = 'block';
-    bonusTag.textContent = '+' + (increments * 5) + '% for ' + years + ' yrs';
-  } else {
-    bonusTag.style.display = 'none';
-  }
-
-  // Breakdown
-  let breakdown = '';
-  if (ht.low === ht.high) {
-    breakdown += 'Base: ' + ht.low.toLocaleString() + ' lbs';
-  } else {
-    breakdown += 'Base: ' + ht.low.toLocaleString() + ' – ' + ht.high.toLocaleString() + ' lbs';
-  }
-  if (increments > 0) {
-    breakdown += '<br>+' + (increments * 5) + '% adjustment (' + increments + ' × 5% per 3 yrs)';
-  }
-  document.getElementById('weightBreakdown').innerHTML = breakdown;
-}
-</script>
-
-
-    <!-- Offices with Storage Tab -->
+   <!-- Offices with Storage Tab -->
     <div class="pane" id="offices-pane" style="display:none;">
       <div style="max-width:960px;">
         <h2 style="font-size:15px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#2e7d32;border-bottom:2px solid #c8e6c9;padding-bottom:8px;margin-bottom:12px;">🏢 Offices with Storage</h2>
@@ -1787,6 +1648,12 @@ function aptFloorStr(f) {
   return `the ${f}${ordinal(f)} floor`;
 }
 function isApt(t) { return t === "Apartment" || t === "Condo" || t === "Office"; }
+function numberToWord(n) {
+  const num = parseInt(n);
+  const words = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+  if (!isNaN(num) && num >= 0 && num <= 20) return words[num];
+  return String(n);
+}
 function fmt$(n) { return "$" + n.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
 /* ── TAB SWITCHING ── */
@@ -2437,15 +2304,16 @@ function generateNotes() {
   if (truckLabel) summaryParts.push(truckLabel);
   push(summaryParts.join(", "));
 
-  function locSummary(type, floors) {
+  function locSummary(type, floors, addSqft) {
     if (type === "Storage") return "storage";
+    const sqftStr = addSqft && val("sqft") ? ` ${val("sqft")} sqft` : "";
     if (isApt(type)) {
       const floorStr = floors === "4+" ? "4th floor or higher" : `${floors}${ordinal(floors)} floor`;
-      return `${floorStr} ${type.toLowerCase()}`;
+      return `${floorStr}${sqftStr} ${type.toLowerCase()}`;
     }
-    return `${storyStr(floors).toLowerCase()} ${type.toLowerCase()}`;
+    return `${storyStr(floors).toLowerCase()}${sqftStr} ${type.toLowerCase()}`;
   }
-  push(`From ${locSummary(originType, originFloors)} to ${locSummary(destType, destFloors)}`);
+  push(`From ${locSummary(originType, originFloors, true)} to ${locSummary(destType, destFloors)}`);
 
   const details = [];
   if (packing !== "Standard Materials") details.push(`${packing} Pack`);
@@ -2472,15 +2340,16 @@ function generateNotes() {
   if (chk("longWalk"))         details.push(`Long Walk - ${val("longWalkLocation")}`);
   if (chk("sharedElevator"))   details.push(`Shared Elevator - ${val("elevatorLocation")}`);
   if (chk("extraStop"))        details.push(`Extra Stop - ${val("extraStopType")}`);
-  if (chk("overnightStorage")) details.push(`Overnight Storage - ${val("overnightNights") || "1"} night(s)`);
+  if (chk("overnightStorage")) { const nights = val("overnightNights") || "1"; details.push(`Overnight Storage - ${numberToWord(nights)} night${nights !== "1" ? "s" : ""}`); }
   if (chk("specialtyItems")) {
     const specialtyType = val("specialtyType");
     const specialtyItem = specialtyType === "Other" ? val("specialtyOtherText") : specialtyType;
     const specialtyFloor = val("specialtyFloor");
-    details.push(`Specialty Item - ${specialtyItem} (${specialtyFloor})`);
+    details.push(`Specialty Item - ${specialtyItem} - ${specialtyFloor}`);
   }
   if (chk("coi"))              details.push("COI Required");
   if (chk("applianceSwap")) { const apps = getApplianceList(); details.push("Appliance Swap" + (apps.length ? ": " + apps.join(" & ") : "")); }
+  if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) details.push(`Rooms Not Moving: ${rnm.join(", ")}`); }
   if (chk("intoStorage"))      details.push("Into AMS Storage");
   if (chk("storageOut"))       details.push("Out of AMS Storage");
   if (details.length) push(details.join(", "));
@@ -2504,24 +2373,31 @@ function generateNotes() {
     blank();
     // Location/floor note
     if (!chk("laborOnly")) {
+      const sqftNote = val("sqft") ? ` ${val("sqft")} sqft` : "";
       if (isApt(originType) || isApt(destType)) {
         const elevNote = chk("sharedElevator") ? "" : " This estimate is made assuming there is no long walk and if an elevator is required it will be dedicated to the AMS crew only. Non-dedicated elevators and long walks can and will change the scope of the move and void any given Binding estimate.";
-        const fromStr = isApt(originType) ? `an ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}` : `a ${storyStr(originFloors)} ${originType.toLowerCase()}`;
+        const fromStr = isApt(originType) ? `an${sqftNote} ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}` : `a ${storyStr(originFloors)}${sqftNote} ${originType.toLowerCase()}`;
         const toStr   = isApt(destType)   ? `a new ${destType.toLowerCase()} on ${aptFloorStr(destFloors)}`  : `a new ${storyStr(destFloors)} ${destType.toLowerCase()}`;
         push(`This estimate is made based off moving out of ${fromStr} to ${toStr}.${elevNote}`);
         blank();
       } else {
-        push(`This estimate is made based off moving out of a ${storyStr(originFloors)} home to a new ${storyStr(destFloors)} home. There is no long walk/steep driveway factored into this estimate.`);
+        push(`This estimate is made based off moving out of a ${storyStr(originFloors)}${sqftNote} home to a new ${storyStr(destFloors)} home. There is no long walk/steep driveway factored into this estimate.`);
         blank();
       }
     }
-    if (chk("longWalk"))       { push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); blank(); }
-    if (chk("sharedElevator")) { push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); blank(); }
     if (packing === "Full")    { push("This estimate includes a full pack. Full packing includes packing items into AMS boxes. AMS cannot pack any live plants, firearms, animals, chemicals, liquids, alcohol, cash, or jewelry."); blank(); }
     else if (packing === "Partial") { push("This estimate includes a partial pack – the packing includes the boxes and rooms where cartons are labeled AMS on the cube sheet below. Additional packing on move day can be provided at an additional cost based on time and materials needed."); blank(); }
-    if (chk("unpacking"))      { push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); blank(); }
-    if (chk("coi"))            { push("This move requires a COI."); blank(); }
-    if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; push(`This estimate includes an Appliance Swap. Taking (${appStr}) from origin to destination, taking (${appStr}) from destination back to origin.`); blank(); }
+    // Consolidated add-on sentences for OD
+    const odAddOns = [];
+    if (chk("longWalk"))       { odAddOns.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
+    if (chk("sharedElevator")) { odAddOns.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
+    if (chk("unpacking"))      { odAddOns.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
+    if (chk("extraStop"))     { odAddOns.push(`This estimate includes a second ${val("extraStopType")}.`); }
+    if (chk("overnightStorage")) { const nights = val("overnightNights") || "1"; odAddOns.push(`This estimate includes ${numberToWord(nights)} night${nights !== "1" ? "s" : ""} of overnight storage.`); }
+    if (chk("coi"))            { odAddOns.push("This move requires a COI."); }
+    if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; odAddOns.push(`This estimate includes an Appliance Swap. Taking ${appStr} from origin to destination, taking ${appStr} from destination back to origin.`); }
+    if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) odAddOns.push(`Rooms not moving: ${rnm.join(", ")}.`); }
+    if (odAddOns.length) { push(odAddOns.join(" ")); blank(); }
     return lines;
   }
 
@@ -2581,18 +2457,6 @@ function generateNotes() {
     blank();
   }
 
-  if (chk("specialtyItems")) {
-    const specialtyType = val("specialtyType");
-    const specialtyItem = specialtyType === "Other" ? val("specialtyOtherText") : specialtyType;
-    const specialtyFloor = val("specialtyFloor");
-    let specialtyText = `Special handling required for ${specialtyItem} on ${specialtyFloor}`;
-    if (specialtyType === "Gun Safe" && val("specialtyWeight")) {
-      specialtyText += ` - ${val("specialtyWeight")} lbs`;
-    }
-    push(specialtyText + ".");
-    blank();
-  }
-
   if (chk("parking")) {
     const parkingOrigin = val("parkingOrigin");
     const parkingOriginDetail = parkingOrigin === "Other" ? val("parkingOriginText") : parkingOrigin;
@@ -2613,13 +2477,13 @@ function generateNotes() {
   if (chk("intoStorage")) {
     const vaults = val("storageVaults") || "X";
     const rate   = val("storageRate")   || "X";
-    push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost – that will be determined once a date and destination are provided. There is no direct access to items in AMS storage. Storage is billed separately (${vaults}) vaults are estimated at ($${rate}) a month totaling ($${rate}) per month.`);
+    push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost – that will be determined once a date and destination are provided. There is no direct access to items in AMS storage. Storage is billed separately ${vaults} vaults are estimated at $${rate} a month totaling $${rate} per month.`);
     blank();
   }
 
   // Storage Out
   if (chk("storageOut")) {
-    push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is (${val("storageOutCID") || "X"}).`);
+    push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is ${val("storageOutCID") || "X"}.`);
     blank();
   }
 
@@ -2634,7 +2498,7 @@ function generateNotes() {
   } else {
     // Standard 26ft block
     if (isBinding) {
-      const tc = `(${numTrucks})`;
+      const tc = numTrucks;
       const tp = numTrucks !== "1" ? "s" : "";
       push(`This ${estimateType} estimate is for moving the items from the attached inventory list with ${tc} 26' AMS moving truck${tp} each day, not to exceed the inventoried items or the time constraints of the estimate, at 26,000 Lbs. GVW. If there are any additional weight, items or time required to complete the move, it will be at an additional cost or the responsibility of the customer to move.`);
       blank();
@@ -2656,7 +2520,7 @@ function generateNotes() {
   // Trucks to Capacity (only if NOT 30ft)
   if (chk("trucksToCapacity") && !use30ft) {
     const n = parseInt(numTrucks);
-    const truckWord = n === 1 ? "a 26 foot box truck" : `(${n}) 26 foot box trucks`;
+    const truckWord = n === 1 ? "a 26 foot box truck" : `${numberToWord(n)} 26 foot box trucks`;
     const truckRef  = n === 1 ? "One truck is" : `Each truck is`;
     push(`This estimate is based on ${truckWord} to capacity. ${truckRef} defined as a 26,000 GVW. AMS is not responsible for any overflow. In the event a truck is overweight, items will be returned to origin until the truck is at the maximum legal weight, or an additional truck will be provided at an additional cost.`);
     blank();
@@ -2666,6 +2530,7 @@ function generateNotes() {
   if (!chk("laborOnly")) {
     const originIsStorage = originType === "Storage";
     const destIsStorage   = destType   === "Storage";
+    const sqftNote = val("sqft") ? ` ${val("sqft")} sqft` : "";
 
     let fromStr, toStr;
 
@@ -2684,9 +2549,9 @@ function generateNotes() {
       }
     } else if (isApt(originType)) {
       const article = originType === "Apartment" ? "an" : "a";
-      fromStr = `${article} ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}`;
+      fromStr = `${article}${sqftNote} ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}`;
     } else {
-      fromStr = `a ${storyStr(originFloors)} ${originType.toLowerCase()}`;
+      fromStr = `a ${storyStr(originFloors)}${sqftNote} ${originType.toLowerCase()}`;
     }
 
     if (destIsStorage) {
@@ -2710,25 +2575,6 @@ function generateNotes() {
     blank();
   }
 
-  if (chk("longWalk"))      { push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); blank(); }
-  if (chk("sharedElevator")){ push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); blank(); }
-  if (chk("elevReservation")) {
-    const loc     = val("elevResLocation");
-    const origWin = val("elevResOriginWindow");
-    const destWin = val("elevResDestWindow");
-    if (loc === "Both") {
-      const parts = [];
-      if (origWin) parts.push(`Origin: ${origWin}`);
-      if (destWin) parts.push(`Destination: ${destWin}`);
-      push(`This move requires an elevator reservation at both origin and destination.${parts.length ? " " + parts.join(" / ") + "." : ""}`);
-    } else if (loc === "Origin") {
-      push(`This move requires an elevator reservation at the origin${origWin ? ` (${origWin})` : ""}.`);
-    } else {
-      push(`This move requires an elevator reservation at the destination${destWin ? ` (${destWin})` : ""}.`);
-    }
-    blank();
-  }
-
   if (packing === "Full") {
     push("This estimate includes a full pack. Full packing includes packing items into AMS boxes. AMS cannot pack any live plants, firearms, animals, chemicals, liquids, alcohol, cash, or jewelry.");
     blank();
@@ -2737,16 +2583,45 @@ function generateNotes() {
     blank();
   }
 
-  if (chk("unpacking"))     { push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); blank(); }
-  if (chk("extraStop"))     { push(`This estimate includes a second (${val("extraStopType")}).`); blank(); }
+  // Consolidated add-on sentences — all on one line
+  const addOnSentences = [];
+  if (chk("longWalk"))      { addOnSentences.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
+  if (chk("sharedElevator")){ addOnSentences.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
+  if (chk("elevReservation")) {
+    const loc     = val("elevResLocation");
+    const origWin = val("elevResOriginWindow");
+    const destWin = val("elevResDestWindow");
+    if (loc === "Both") {
+      const parts = [];
+      if (origWin) parts.push(`Origin: ${origWin}`);
+      if (destWin) parts.push(`Destination: ${destWin}`);
+      addOnSentences.push(`This move requires an elevator reservation at both origin and destination.${parts.length ? " " + parts.join(" / ") + "." : ""}`);
+    } else if (loc === "Origin") {
+      addOnSentences.push(`This move requires an elevator reservation at the origin${origWin ? ` (${origWin})` : ""}.`);
+    } else {
+      addOnSentences.push(`This move requires an elevator reservation at the destination${destWin ? ` (${destWin})` : ""}.`);
+    }
+  }
+  if (chk("unpacking"))     { addOnSentences.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
+  if (chk("extraStop"))     { addOnSentences.push(`This estimate includes a second ${val("extraStopType")}.`); }
   if (chk("overnightStorage")) {
     const nights = val("overnightNights") || "1";
-    push(`This estimate includes (${nights}) night${nights !== "1" ? "s" : ""} of overnight storage.`);
-    blank();
+    addOnSentences.push(`This estimate includes ${numberToWord(nights)} night${nights !== "1" ? "s" : ""} of overnight storage.`);
   }
-
-  if (chk("coi")) { push("This move requires a COI."); blank(); }
-  if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; push(`This estimate includes an Appliance Swap. Taking (${appStr}) from origin to destination, taking (${appStr}) from destination back to origin.`); blank(); }
+  if (chk("specialtyItems")) {
+    const specialtyType = val("specialtyType");
+    const specialtyItem = specialtyType === "Other" ? val("specialtyOtherText") : specialtyType;
+    const specialtyFloor = val("specialtyFloor");
+    let specialtyText = `Special handling required for ${specialtyItem} on ${specialtyFloor}`;
+    if (specialtyType === "Gun Safe" && val("specialtyWeight")) {
+      specialtyText += ` - ${val("specialtyWeight")} lbs`;
+    }
+    addOnSentences.push(specialtyText + ".");
+  }
+  if (chk("coi")) { addOnSentences.push("This move requires a COI."); }
+  if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; addOnSentences.push(`This estimate includes an Appliance Swap. Taking ${appStr} from origin to destination, taking ${appStr} from destination back to origin.`); }
+  if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) addOnSentences.push(`Rooms not moving: ${rnm.join(", ")}.`); }
+  if (addOnSentences.length) { push(addOnSentences.join(" ")); blank(); }
   if (chk("partialPacking")) {
     const packing = val("packing");
     if (packing === "Partial") {
@@ -2894,7 +2769,7 @@ function generateCrewNotes() {
   if (chk("trucksToCapacity"))              parts.push("trucks to capacity");
   if (chk("truck30ft"))                     parts.push("30ft truck");
 
-  function locLabel(type, floors) {
+  function locLabel(type, floors, addSqft) {
     if (type === "Storage") {
       const units = getStorageUnits();
       if (units.length === 0) return "storage";
@@ -2904,13 +2779,14 @@ function generateCrewNotes() {
       }
       return `${units.length} storage units`;
     }
-    if (isApt(type)) return `${aptFloorStr(floors)} ${type.toLowerCase()}`;
-    return `${storyStr(floors).toLowerCase()} ${type.toLowerCase()}`;
+    const sqftStr = addSqft && val("sqft") ? ` ${val("sqft")} sqft` : "";
+    if (isApt(type)) return `${aptFloorStr(floors)}${sqftStr} ${type.toLowerCase()}`;
+    return `${storyStr(floors).toLowerCase()}${sqftStr} ${type.toLowerCase()}`;
   }
 
   let sentence = parts.join(", ");
   sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-  sentence += ` – move from ${locLabel(originType, originFloors)} to ${locLabel(destType, destFloors)}`;
+  sentence += ` – move from ${locLabel(originType, originFloors, true)} to ${locLabel(destType, destFloors)}`;
 
   // If multiple storage units, list each one
   if (originType === "Storage") {
@@ -2944,6 +2820,7 @@ function generateCrewNotes() {
   if (chk("intoStorage"))      notes.push("moving into AMS storage");
   if (chk("storageOut"))       notes.push("moving out of AMS storage");
   if (chk("unpacking"))        notes.push("unpacking included");
+  if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) notes.push(`rooms not moving: ${rnm.join(", ")}`); }
 
   if (notes.length) sentence += " – " + notes.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(", ");
   return sentence;
@@ -3071,6 +2948,41 @@ function updateMultidayBoxes() {
     dayDiv.appendChild(select);
     container.appendChild(dayDiv);
   }
+}
+
+function syncRoomsNotMoving() {
+  const on = $$("roomsNotMoving").checked;
+  $$("roomsNotMovingOpts").style.display = on ? "block" : "none";
+  if (!on) {
+    ["rnmMasterBedroom","rnmBedroom2","rnmBedroom3","rnmBedroom4","rnmKitchen","rnmLivingRoom","rnmDiningRoom","rnmOffice","rnmGarage","rnmPatio","rnmAttic","rnmBasement","rnmOther"].forEach(id => { $$(id).checked = false; });
+    $$("rnmOtherText").value = "";
+    $$("rnmOtherInput").style.display = "none";
+  }
+  render();
+}
+
+function syncRnmOther() {
+  $$("rnmOtherInput").style.display = $$("rnmOther").checked ? "block" : "none";
+  if (!$$("rnmOther").checked) $$("rnmOtherText").value = "";
+  render();
+}
+
+function getRoomsNotMoving() {
+  const rooms = [];
+  if (chk("rnmMasterBedroom")) rooms.push("Master Bedroom");
+  if (chk("rnmBedroom2"))      rooms.push("Bedroom 2");
+  if (chk("rnmBedroom3"))      rooms.push("Bedroom 3");
+  if (chk("rnmBedroom4"))      rooms.push("Bedroom 4");
+  if (chk("rnmKitchen"))       rooms.push("Kitchen");
+  if (chk("rnmLivingRoom"))    rooms.push("Living Room");
+  if (chk("rnmDiningRoom"))    rooms.push("Dining Room");
+  if (chk("rnmOffice"))        rooms.push("Office");
+  if (chk("rnmGarage"))        rooms.push("Garage");
+  if (chk("rnmPatio"))         rooms.push("Patio");
+  if (chk("rnmAttic"))         rooms.push("Attic");
+  if (chk("rnmBasement"))      rooms.push("Basement");
+  if (chk("rnmOther") && val("rnmOtherText")) rooms.push(val("rnmOtherText"));
+  return rooms;
 }
 
 function syncSpecialtyItems() {
@@ -3418,15 +3330,18 @@ function regUpdate() {
   if (chk("furnitureOnly")) { lines.push(""); lines.push("This estimate is only for moving furniture in the home, AMS is not responsible for moving any boxes or storage bins."); }
   if (chk("partialMove"))   { lines.push(""); lines.push("Partial move - This estimate includes moving Items listed in the cube sheet below. If the shipper requests additional services, they are at an additional cost – based upon the listed hourly rate and the materials needed."); }
   if (chk("trucksToCapacity")) { lines.push(""); lines.push("This estimate is based on a 26 foot box truck to capacity. One truck is defined as a 26,000 GVW. AMS is not responsible for any overflow. In the event a truck is overweight, items will be returned to origin until the truck is at the maximum legal weight, or an additional truck will be provided at an additional cost."); }
-  if (chk("longWalk"))      { lines.push(""); lines.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
-  if (chk("sharedElevator")){ lines.push(""); lines.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
   if (packing === "Full")   { lines.push(""); lines.push("This estimate includes a full pack. Full packing includes packing items into AMS boxes. AMS cannot pack any live plants, firearms, animals, chemicals, liquids, alcohol, cash, or jewelry."); }
-  if (chk("unpacking"))     { lines.push(""); lines.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
-  if (chk("extraStop"))     { lines.push(""); lines.push(`This estimate includes a second (${val("extraStopType")}).`); }
-  if (chk("overnightStorage")) { const n = val("overnightNights")||"1"; lines.push(""); lines.push(`This estimate includes (${n}) night${n!=="1"?"s":""} of overnight storage.`); }
-  if (chk("coi"))           { lines.push(""); lines.push("This move requires a COI."); }
-  if (chk("intoStorage"))   { const v=val("storageVaults")||"X", r=val("storageRate")||"X"; lines.push(""); lines.push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost. Storage is billed separately (${v}) vaults are estimated at ($${r}) a month.`); }
-  if (chk("storageOut"))    { lines.push(""); lines.push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is (${val("storageOutCID")||"X"}).`); }
+  // Consolidated add-on sentences for reg notes
+  const regAddOns = [];
+  if (chk("longWalk"))      { regAddOns.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
+  if (chk("sharedElevator")){ regAddOns.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
+  if (chk("unpacking"))     { regAddOns.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
+  if (chk("extraStop"))     { regAddOns.push(`This estimate includes a second ${val("extraStopType")}.`); }
+  if (chk("overnightStorage")) { const n = val("overnightNights")||"1"; regAddOns.push(`This estimate includes ${numberToWord(n)} night${n!=="1"?"s":""} of overnight storage.`); }
+  if (chk("coi"))           { regAddOns.push("This move requires a COI."); }
+  if (regAddOns.length) { lines.push(""); lines.push(regAddOns.join(" ")); }
+  if (chk("intoStorage"))   { const v=val("storageVaults")||"X", r=val("storageRate")||"X"; lines.push(""); lines.push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost. Storage is billed separately ${v} vaults are estimated at $${r} a month.`); }
+  if (chk("storageOut"))    { lines.push(""); lines.push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is ${val("storageOutCID")||"X"}.`); }
 
   lines.push("");
   lines.push("This estimate is for moving the items from the attached inventory list with 2 26' AMS moving trucks each day, not to exceed the inventoried items or the time constraints of the estimate, at 26,000 Lbs. GVW. If there are any additional weight, items or time required to complete the move, it will be at an additional cost or the responsibility of the customer to move.");
