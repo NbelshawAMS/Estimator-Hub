@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    if (sessionStorage.getItem('estimator_hub_auth') !== 'true') {
-      window.location.href = 'index.html';
-    }
-  </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>All My Sons Estimator Hub</title>
@@ -49,7 +44,7 @@
   /* PANES */
   .pane { flex: 1; overflow-y: auto; padding: 22px 28px; background: #fff; display: none; }
   .pane.active { display: block; }
-  #crew-pane, #calc-pane, #od-pane, #reg-pane, #sop-pane, #faq-pane, #stor-pane, #regmkt-pane { background: #f9fdf9; }
+  #crew-pane, #calc-pane, #od-pane, #reg-pane, #sop-pane, #faq-pane, #stor-pane, #regmkt-pane, #ams-pane { background: #f9fdf9; }
 
   .preview-content { max-width: 680px; font-size: 14px; line-height: 1.8; color: #111; font-family: Georgia, 'Times New Roman', serif; }
   .preview-content p { margin-bottom: 2px; }
@@ -82,8 +77,102 @@
   .od-table .td-val { text-align: right; font-weight: 700; color: #2e7d32; font-family: Arial, sans-serif; }
   .od-total-row td { font-weight: 800; font-size: 13px; border-top: 2px solid #2e7d32; }
 
+
+
+  /* AMS map */
+  
+body.ams-focus #form-panel { display:none; }
+  body.ams-focus #right-panel { width:100%; }
+  body.ams-focus #ams-pane { padding:8px 10px; background:#edf6ee; }
+  body.ams-focus #body { height: calc(100vh - 62px); }
+  .ams-page { display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:14px; height:calc(100vh - 122px); min-height:700px; }
+  .ams-main, .ams-side { min-height:0; }
+  .ams-main-card, .ams-side-card { background:#fff; border:2px solid #c8e6c9; border-radius:16px; box-shadow:0 10px 28px rgba(0,0,0,0.06); }
+  .ams-main-card { display:flex; flex-direction:column; height:100%; overflow:hidden; }
+  .ams-side { display:flex; flex-direction:column; gap:12px; }
+  .ams-side-card { padding:14px; }
+  .ams-headerbar { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; padding:14px 16px 10px; border-bottom:1.5px solid #dcefdc; background:linear-gradient(180deg,#fbfefb,#f4fbf4); }
+  .ams-title { font-size:17px; font-weight:900; letter-spacing:0.08em; text-transform:uppercase; color:#1f5e24; }
+  .ams-subtitle { font-size:12px; color:#56705a; margin-top:4px; line-height:1.5; }
+  .ams-status-badge { border:1.5px solid #a5d6a7; background:#e8f5e9; color:#1b5e20; border-radius:999px; padding:7px 12px; font-size:10px; font-weight:900; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; }
+  .ams-controlbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:10px 16px; border-bottom:1.5px solid #e2f0e2; background:#fff; }
+  .ams-pill { border:1.5px solid #c8e6c9; background:#fff; color:#1b5e20; border-radius:999px; padding:8px 12px; font-size:11px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; transition:all 0.15s; }
+  .ams-pill:hover, .ams-pill.active { background:#2e7d32; border-color:#2e7d32; color:#fff; }
+  .ams-search { margin-left:auto; min-width:280px; max-width:380px; width:100%; position:relative; }
+  .ams-search input { width:100%; padding:11px 12px; border:2px solid #c8e6c9; border-radius:10px; font-size:13px; background:#fbfefb; }
+  .ams-search input:focus { outline:none; border-color:#2e7d32; box-shadow:0 0 0 3px rgba(46,125,50,0.12); }
+  .ams-map-viewport { position:relative; flex:1; min-height:600px; background:radial-gradient(circle at top,#f7fbf7 0%,#eef8ef 55%,#e7f3e8 100%); overflow:hidden; }
+  #amsUsMap { width:100%; height:100%; display:block; }
+  .ams-map-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#2e7d32; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; font-size:12px; background:linear-gradient(180deg,rgba(255,255,255,0.70),rgba(255,255,255,0.22)); z-index:5; pointer-events:none; }
+  .ams-map-loading.hidden { display:none; }
+  .ams-geo-status { position:absolute; left:16px; top:16px; z-index:4; background:rgba(255,255,255,0.94); border:1px solid #d8ecd8; border-radius:12px; padding:10px 12px; font-size:11px; color:#35553a; line-height:1.45; max-width:340px; box-shadow:0 8px 24px rgba(0,0,0,0.05); }
+  .ams-geo-status.hidden { display:none; }
+  .ams-map-note { position:absolute; left:16px; bottom:16px; z-index:4; background:rgba(255,255,255,0.92); border:1px solid #d8ecd8; border-radius:12px; padding:10px 12px; font-size:11px; color:#35553a; line-height:1.55; max-width:360px; box-shadow:0 8px 24px rgba(0,0,0,0.05); }
+  .ams-zoom-controls { position:absolute; right:16px; top:16px; z-index:4; display:flex; flex-direction:column; gap:8px; }
+  .ams-zoom-btn { width:42px; height:42px; border:none; border-radius:12px; background:rgba(255,255,255,0.96); border:1px solid #d8ecd8; font-size:22px; font-weight:900; color:#1b5e20; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+  .ams-zoom-btn:hover { background:#2e7d32; color:#fff; border-color:#2e7d32; }
+  .ams-state, .ams-state-split { stroke:#ffffff; stroke-width:1.2; vector-effect:non-scaling-stroke; transition:opacity 0.15s ease; cursor:pointer; }
+  .ams-state.dimmed, .ams-state-split.dimmed { opacity:0.22; }
+  .ams-state-line { fill:none; stroke:#fff; stroke-width:1.2; vector-effect:non-scaling-stroke; pointer-events:none; }
+  .ams-state-split-line { fill:none; stroke:rgba(23,61,25,0.46); stroke-width:2.1; stroke-dasharray:7 5; vector-effect:non-scaling-stroke; pointer-events:none; }
+  .ams-nation-outline { fill:none; stroke:#244d27; stroke-width:2.2; vector-effect:non-scaling-stroke; pointer-events:none; }
+  .ams-tz-label { font-size:22px; font-weight:900; letter-spacing:0.08em; text-transform:uppercase; fill:#173d19; opacity:0.18; pointer-events:none; }
+  .ams-state-label { font-size:10px; font-weight:800; fill:#173d19; opacity:0.88; pointer-events:none; paint-order:stroke; stroke:#ffffff; stroke-width:3px; stroke-linejoin:round; }
+  .ams-state-label.small { font-size:8.5px; }
+  .ams-state-label.tiny { font-size:7.5px; }
+  .ams-marker { cursor:pointer; }
+  .ams-marker circle { stroke:#ffffff; stroke-width:2.6; vector-effect:non-scaling-stroke; filter:drop-shadow(0 2px 8px rgba(0,0,0,0.18)); transition:stroke-width 0.15s ease, opacity 0.15s ease; }
+  .ams-marker.active circle, .ams-marker:hover circle { stroke:#173d19; stroke-width:3.2; }
+  .ams-sidebar-title { font-size:11px; font-weight:900; color:#2e7d32; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
+  .ams-count-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+  .ams-count-box { border:1.5px solid #d6ead6; border-radius:12px; padding:11px 12px; background:#fbfefb; }
+  .ams-count-box .lbl { font-size:9px; font-weight:900; color:#2e7d32; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; }
+  .ams-count-box .val { font-size:26px; font-weight:900; color:#111; line-height:1; }
+  .ams-location-info { display:none; }
+  .ams-location-empty { font-size:13px; color:#5a665d; line-height:1.65; }
+  .ams-info-row { background:#f2faf2; border-radius:10px; padding:10px 12px; margin-top:9px; }
+  .ams-info-row .k { font-size:9px; font-weight:900; color:#2e7d32; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:4px; }
+  .ams-info-row .v { font-size:13px; line-height:1.6; color:#222; }
+  .ams-side { overflow:auto; padding-right:2px; }
+  .ams-city-hero { margin-top:12px; border:1.5px solid #d6ead6; border-radius:14px; overflow:hidden; background:#f7fbf7; }
+  .ams-city-hero-img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:linear-gradient(135deg,#eef7ef,#ddeede); }
+  .ams-city-hero-body { padding:10px 12px; }
+  .ams-city-hero-title { font-size:10px; font-weight:900; color:#2e7d32; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; }
+  .ams-city-hero-status { font-size:12px; color:#506053; line-height:1.55; }
+  .ams-bullets { margin:0; padding-left:18px; }
+  .ams-bullets li { margin:0 0 7px; line-height:1.55; }
+  .ams-bullets li:last-child { margin-bottom:0; }
+  .ams-soft-note { margin-top:10px; font-size:11px; color:#6a786d; line-height:1.55; }
+  .ams-list { display:grid; grid-template-columns:1fr; gap:7px; max-height:calc(100vh - 465px); min-height:220px; overflow:auto; padding-right:2px; }
+  .ams-loc-btn { background:#fff; border:1.5px solid #c8e6c9; border-radius:10px; padding:10px 11px; font-size:12px; font-weight:800; color:#222; text-align:left; cursor:pointer; transition:all 0.15s; user-select:none; }
+  .ams-loc-btn small { display:block; font-size:10px; color:#5f6d5f; font-weight:700; margin-top:3px; }
+  .ams-loc-btn:hover, .ams-loc-btn.active { background:#2e7d32; border-color:#2e7d32; color:#fff; }
+  .ams-loc-btn:hover small, .ams-loc-btn.active small { color:#eaf5ea; }
+  .ams-legend { display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:10px 16px 14px; border-top:1px solid #edf4ed; background:#fbfefb; }
+  .ams-legend-chip { display:inline-flex; align-items:center; gap:7px; padding:6px 10px; border-radius:999px; background:#fff; border:1px solid #d8ead8; font-size:10px; font-weight:800; color:#234f28; text-transform:uppercase; letter-spacing:0.05em; }
+  .ams-legend-swatch { width:10px; height:10px; border-radius:50%; flex:0 0 10px; }
+  .ams-inline-muted { color:#728076; font-size:11px; }
   .hidden { display: none; }
+@media (max-width: 1180px) {
+    .ams-page { grid-template-columns:1fr; height:auto; min-height:0; }
+    .ams-map-viewport { min-height:480px; }
+    .ams-list { max-height:360px; }
+  }
+
 </style>
+
+<script>
+(function(){
+  try {
+    if (sessionStorage.getItem('estimator_hub_auth') !== 'true') {
+      window.location.replace('index.html');
+    }
+  } catch (e) {
+    window.location.replace('index.html');
+  }
+})();
+</script>
+
 </head>
 <body>
 
@@ -116,10 +205,6 @@
     <div class="field">
       <label class="field-label">Number of Trucks</label>
       <select id="numTrucks"><option>1</option><option selected>2</option><option>3</option></select>
-    </div>
-    <div class="field">
-      <label class="field-label">Sqft</label>
-      <input type="text" id="sqft" placeholder="e.g. 2,500" oninput="render()">
     </div>
 
     <div class="section-head">Origin</div>
@@ -188,27 +273,6 @@
       <label class="field-label">Number of Days</label>
       <input type="number" id="multidayDays" value="2" min="2" max="7" onchange="updateMultidayBoxes()" style="width:100%;font-size:12px;padding:4px 7px;border:1.5px solid #c8e6c9;border-radius:5px;font-family:inherit;">
       <div id="multidayBoxes" style="margin-top:10px;"></div>
-    </div>
-    <label class="check-row"><input type="checkbox" id="roomsNotMoving" onchange="syncRoomsNotMoving()"> Rooms Not Moving</label>
-    <div id="roomsNotMovingOpts" style="display:none;margin-top:4px;margin-bottom:12px;">
-      <div class="indent">
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmMasterBedroom" onchange="render()"> Master Bedroom</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBedroom2" onchange="render()"> Bedroom 2</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBedroom3" onchange="render()"> Bedroom 3</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBedroom4" onchange="render()"> Bedroom 4</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmKitchen" onchange="render()"> Kitchen</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmLivingRoom" onchange="render()"> Living Room</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmDiningRoom" onchange="render()"> Dining Room</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmOffice" onchange="render()"> Office</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmGarage" onchange="render()"> Garage</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmPatio" onchange="render()"> Patio</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmAttic" onchange="render()"> Attic</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmBasement" onchange="render()"> Basement</label>
-        <label class="check-row" style="font-size:11px;"><input type="checkbox" id="rnmOther" onchange="syncRnmOther()"> Other</label>
-        <div id="rnmOtherInput" style="display:none;margin-top:3px;">
-          <input type="text" id="rnmOtherText" placeholder="Specify rooms..." oninput="render()" style="width:100%;font-size:11px;padding:4px 7px;border:1.5px solid #c8e6c9;border-radius:5px;font-family:inherit;">
-        </div>
-      </div>
     </div>
 
     <div class="section-head">Add-ons</div>
@@ -332,7 +396,7 @@
 
     <!-- Sticky bottom button -->
     <div style="margin-top:18px;padding-top:14px;border-top:1.5px solid #c8e6c9;">
-      <button onclick="switchTab('offices')" style="width:100%;background:#111;color:#7cb87f;border:1.5px solid #2e7d32;border-radius:7px;padding:9px 10px;font-size:11px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;font-family:Georgia,serif;text-align:center;">
+      <button onclick="switchTab('ams')" style="width:100%;background:#111;color:#7cb87f;border:1.5px solid #2e7d32;border-radius:7px;padding:9px 10px;font-size:11px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;font-family:Georgia,serif;text-align:center;">
         🏢 AMS Locations &amp; Contacts
       </button>
     </div>
@@ -353,6 +417,7 @@
       <button class="tab-btn"        id="tab-sop"   onclick="switchTab('sop')">SOP</button>
       <button class="tab-btn"        id="tab-faq"   onclick="switchTab('faq')">FAQ</button>
       <button class="tab-btn"        id="tab-training" onclick="switchTab('training')">Training</button>
+      <button class="tab-btn"        id="tab-ams" onclick="switchTab('ams')">AMS Locations</button>
       <button class="tab-btn"        id="tab-offices" onclick="switchTab('offices')">Offices w/ Storage</button>
       <button class="tab-btn"        id="tab-commission" onclick="switchTab('commission')">💰 Commission Sheets</button>
       <button class="tab-btn"        id="tab-gunsafe" onclick="switchTab('gunsafe')">🔒 Gun Safe DB</button>
@@ -978,6 +1043,100 @@
       </div>
     </div><!-- /training-pane -->
 
+
+   <!-- AMS Locations Tab -->
+    
+<div class="pane" id="ams-pane" style="display:none;">
+      <div class="ams-page">
+        <div class="ams-main">
+          <div class="ams-main-card">
+            <div class="ams-headerbar">
+              <div>
+                <div class="ams-title">AMS Locations</div>
+                
+              </div>
+              <div class="ams-status-badge">Spreadsheet-Plotted</div>
+            </div>
+
+            <div class="ams-controlbar">
+              <button type="button" class="ams-pill active" data-tz-filter="all" onclick="setAmsTimezoneFilter('all')">All</button>
+              <button type="button" class="ams-pill" data-tz-filter="Pacific" onclick="setAmsTimezoneFilter('Pacific')">Pacific</button>
+              <button type="button" class="ams-pill" data-tz-filter="Mountain" onclick="setAmsTimezoneFilter('Mountain')">Mountain</button>
+              <button type="button" class="ams-pill" data-tz-filter="Central" onclick="setAmsTimezoneFilter('Central')">Central</button>
+              <button type="button" class="ams-pill" data-tz-filter="Eastern" onclick="setAmsTimezoneFilter('Eastern')">Eastern</button>
+              <div class="ams-search">
+                <input id="amsSearchInput" type="text" placeholder="Search branch, city, state, address, RVP, or ops manager..." oninput="filterAmsLocations()">
+              </div>
+            </div>
+
+            <div class="ams-map-viewport">
+              <svg id="amsUsMap" viewBox="0 0 1200 760" aria-label="Lower 48 U.S. map with AMS branches"></svg>
+              <div id="amsMapLoading" class="ams-map-loading">Loading U.S. map…</div>
+              <div id="amsGeoStatus" class="ams-geo-status hidden"></div>
+              <div class="ams-zoom-controls">
+                <button type="button" class="ams-zoom-btn" onclick="amsZoomIn()" aria-label="Zoom in">+</button>
+                <button type="button" class="ams-zoom-btn" onclick="amsZoomOut()" aria-label="Zoom out">−</button>
+                <button type="button" class="ams-zoom-btn" onclick="amsZoomReset()" aria-label="Reset zoom">⤾</button>
+              </div>
+              
+            </div>
+
+            <div class="ams-legend">
+              <span class="ams-legend-chip"><span class="ams-legend-swatch" style="background:#4caf50;"></span>Pacific</span>
+              <span class="ams-legend-chip"><span class="ams-legend-swatch" style="background:#8bc34a;"></span>Mountain</span>
+              <span class="ams-legend-chip"><span class="ams-legend-swatch" style="background:#f9a825;"></span>Central</span>
+              <span class="ams-legend-chip"><span class="ams-legend-swatch" style="background:#ef6c00;"></span>Eastern</span>
+              <span class="ams-inline-muted">Lower 48 only • Idaho shown fully Mountain • Oregon shown fully Pacific</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ams-side">
+          <div class="ams-side-card">
+            <div class="ams-sidebar-title">Branch Count</div>
+            <div class="ams-count-grid">
+              <div class="ams-count-box"><div class="lbl">Pacific</div><div id="amsCountPacific" class="val">0</div></div>
+              <div class="ams-count-box"><div class="lbl">Mountain</div><div id="amsCountMountain" class="val">0</div></div>
+              <div class="ams-count-box"><div class="lbl">Central</div><div id="amsCountCentral" class="val">0</div></div>
+              <div class="ams-count-box"><div class="lbl">Eastern</div><div id="amsCountEastern" class="val">0</div></div>
+            </div>
+          </div>
+
+          <div class="ams-side-card">
+            <div class="ams-sidebar-title">Selected Branch</div>
+            <div id="amsLocationEmpty" class="ams-location-empty">Select a branch pin or click a branch from the list to load the details here.</div>
+            <div id="amsLocationInfo" class="ams-location-info">
+              <div id="amsLocationName" style="font-size:22px;font-weight:900;color:#1b5e20;margin-bottom:10px;"></div>
+              <div class="ams-info-row"><div class="k">Timezone / Region</div><div id="amsLocationRegion" class="v">—</div></div>
+              <div class="ams-info-row"><div class="k">Address</div><div id="amsLocationAddress" class="v">—</div></div>
+              <div class="ams-info-row"><div class="k">RVP</div><div id="amsLocationRvp" class="v">—</div></div>
+              <div class="ams-info-row"><div class="k">Operations Manager</div><div id="amsLocationOps" class="v">—</div></div>
+              <div class="ams-info-row"><div class="k">Phone Number</div><div id="amsLocationPhone" class="v">—</div></div>
+              <div class="ams-info-row"><div class="k">Extension</div><div id="amsLocationExt" class="v">—</div></div>
+              <div class="ams-info-row"><div class="k">Email</div><div id="amsLocationEmail" class="v">—</div></div>
+              <div class="ams-city-hero">
+                <img id="amsLocationImage" class="ams-city-hero-img" alt="Selected city view" loading="lazy" referrerpolicy="no-referrer" />
+                <div class="ams-city-hero-body">
+                  <div class="ams-city-hero-title">City Snapshot</div>
+                  <div id="amsLocationImageStatus" class="ams-city-hero-status">Click a branch to load a city photo and quick local notes.</div>
+                </div>
+              </div>
+              <div class="ams-info-row"><div class="k">Nearby Teams</div><div id="amsLocationSports" class="v">—</div></div>
+              <div class="ams-info-row"><div class="k">Fun Facts</div><div class="v"><ul id="amsLocationFacts" class="ams-bullets"><li>Select a branch to load city facts.</li></ul></div></div>
+              <div class="ams-info-row"><div class="k">Home / Access Notes</div><div class="v"><ul id="amsLocationHousing" class="ams-bullets"><li>Select a branch to load common home and access notes.</li></ul></div></div>
+              <div id="amsLocationWikiNote" class="ams-soft-note"></div>
+            </div>
+          </div>
+
+          <div class="ams-side-card" style="flex:1;min-height:0;display:flex;flex-direction:column;">
+            <div class="ams-sidebar-title">All Branches</div>
+            <div id="amsLocationsGrid" class="ams-list"></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /ams-pane -->
+
+
    <!-- Offices with Storage Tab -->
     <div class="pane" id="offices-pane" style="display:none;">
       <div style="max-width:960px;">
@@ -1051,6 +1210,9 @@
       </div>
     </div><!-- /offices-pane -->
 
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
 <script>
 // ============================================================
 // OFFICE STORAGE DATA
@@ -1104,7 +1266,2812 @@ const STORAGE_OFFICES = {
   "Virginia North":   { rate: 80, emptyVaults: 0 }
 };
 
+
+const AMS_TZ_COLORS = {
+  Pacific: '#4caf50',
+  Mountain: '#8bc34a',
+  Central: '#f9a825',
+  Eastern: '#ef6c00'
+};
+
+const AMS_LOCATIONS_ARRAY = [
+  {
+    "name": "Akron",
+    "city": "Akron",
+    "state": "OH",
+    "street": "2939 Chenoweth Rd",
+    "zip": "44312",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Drew Tate",
+    "phone": "",
+    "extension": "6696",
+    "email": "cleveland@allmysons.com",
+    "lat": 41.033442,
+    "lon": -81.438528,
+    "timezone": "Eastern",
+    "address": "2939 Chenoweth Rd, Akron, OH, 44312"
+  },
+  {
+    "name": "Albuquerque",
+    "city": "Albuquerque",
+    "state": "NM",
+    "street": "3341 Columbia Dr NE",
+    "zip": "87107",
+    "rvp": "Brian Lohnes",
+    "operationsManager": "Alan Smith",
+    "phone": "(505) 207-2245",
+    "extension": "9509",
+    "email": "albuquerque@allmysons.com",
+    "lat": 35.134742,
+    "lon": -106.642747,
+    "timezone": "Mountain",
+    "address": "3341 Columbia Dr NE, Albuquerque, NM, 87107"
+  },
+  {
+    "name": "Atlanta",
+    "city": "Roswell",
+    "state": "GA",
+    "street": "1200 Northmeadow Parkway, Suite 100",
+    "zip": "30076",
+    "rvp": "Jeff Wolf",
+    "operationsManager": "Logan Spielmaker",
+    "phone": "(770) 667-5230",
+    "extension": "6514",
+    "email": "atlanta@allmysons.com",
+    "lat": 34.021324,
+    "lon": -84.310408,
+    "timezone": "Eastern",
+    "address": "1200 Northmeadow Parkway, Suite 100, Roswell, GA, 30076"
+  },
+  {
+    "name": "Atlanta 3",
+    "city": "Stone Mountain",
+    "state": "GA",
+    "street": "1584 McCurdy Drive",
+    "zip": "30084",
+    "rvp": "Jeff Wolf",
+    "operationsManager": "Isaiah Green",
+    "phone": "(470) 468-5434",
+    "extension": "9525",
+    "email": "atlanta3@allmysons.com",
+    "lat": 33.856986,
+    "lon": -84.21602,
+    "timezone": "Eastern",
+    "address": "1584 McCurdy Drive, Stone Mountain, GA, 30084"
+  },
+  {
+    "name": "Austin",
+    "city": "Pflugerville",
+    "state": "TX",
+    "street": "2337 Patterson Industrial Drive",
+    "zip": "78660",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Brian Runkle",
+    "phone": "(512) 651-4504",
+    "extension": "6517",
+    "email": "austin@allmysons.com",
+    "lat": 30.442133,
+    "lon": -97.629895,
+    "timezone": "Central",
+    "address": "2337 Patterson Industrial Drive, Pflugerville, TX, 78660"
+  },
+  {
+    "name": "Austin South",
+    "city": "Austin",
+    "state": "TX",
+    "street": "500 E. Ben White Blvd, Suite # E-350",
+    "zip": "78704",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Gerardo Maldonado",
+    "phone": "(512) 710-0298",
+    "extension": "6686",
+    "email": "austinsouth@allmysons.com",
+    "lat": 30.242831,
+    "lon": -97.765788,
+    "timezone": "Central",
+    "address": "500 E. Ben White Blvd, Suite # E-350, Austin, TX, 78704"
+  },
+  {
+    "name": "Baton Rouge",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "street": "10444 Airline Hwy., Bldg. #3",
+    "zip": "70816",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Tristan Henderson",
+    "phone": "(225) 292-2424",
+    "extension": "6646",
+    "email": "batonrouge@allmysons.com",
+    "lat": 30.427289,
+    "lon": -91.035645,
+    "timezone": "Central",
+    "address": "10444 Airline Hwy., Bldg. #3, Baton Rouge, LA, 70816"
+  },
+  {
+    "name": "Birmingham",
+    "city": "Hoover",
+    "state": "AL",
+    "street": "3430 Lorna Lane",
+    "zip": "35216",
+    "rvp": "Chris Regan",
+    "operationsManager": "Allease Ellis",
+    "phone": "(205) 591-7002",
+    "extension": "6651",
+    "email": "birmingham@allmysons.com",
+    "lat": 33.41531,
+    "lon": -86.790425,
+    "timezone": "Central",
+    "address": "3430 Lorna Lane, Hoover, AL, 35216"
+  },
+  {
+    "name": "Boise",
+    "city": "Garden City",
+    "state": "ID",
+    "street": "3987 West Chinden Blvd",
+    "zip": "83714",
+    "rvp": "Brian Lohnes",
+    "operationsManager": "Logan Elverud",
+    "phone": "(208) 322-9200",
+    "extension": "6523",
+    "email": "boise@allmysons.com",
+    "lat": 43.643036,
+    "lon": -116.265751,
+    "timezone": "Pacific",
+    "address": "3987 West Chinden Blvd, Garden City, ID, 83714"
+  },
+  {
+    "name": "Boston",
+    "city": "Medford",
+    "state": "MA",
+    "street": "134 Mystic Avenue",
+    "zip": "02155",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Sean Corcoran",
+    "phone": "(617) 982-2109",
+    "extension": "9508",
+    "email": "Boston@allmysons.com",
+    "lat": 42.417335,
+    "lon": -71.108686,
+    "timezone": "Eastern",
+    "address": "134 Mystic Avenue, Medford, MA, 02155"
+  },
+  {
+    "name": "Boulder",
+    "city": "Broomfield",
+    "state": "CO",
+    "street": "2275 West Midway Blvd.",
+    "zip": "80020",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Matthew Medders",
+    "phone": "(720) 575-1155",
+    "extension": "6678",
+    "email": "boulder@allmysons.com",
+    "lat": 39.924513,
+    "lon": -105.060902,
+    "timezone": "Mountain",
+    "address": "2275 West Midway Blvd., Broomfield, CO, 80020"
+  },
+  {
+    "name": "Boulder Micro",
+    "city": "Fort Collins",
+    "state": "CO",
+    "street": "2216 Airway Ave",
+    "zip": "80524",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Matthew Medders",
+    "phone": "(970) 457-4186",
+    "extension": "6678",
+    "email": "boulder@allmysons.com",
+    "lat": 40.59865,
+    "lon": -105.05811,
+    "timezone": "Mountain",
+    "address": "2216 Airway Ave, Fort Collins, CO, 80524"
+  },
+  {
+    "name": "Boynton Beach",
+    "city": "Riviera Beach",
+    "state": "FL",
+    "street": "838 W. 13th Court",
+    "zip": "33404",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Tyler Kearney",
+    "phone": "(561) 475-3493",
+    "extension": "6685",
+    "email": "boyntonbeach@allmysons.com",
+    "lat": 26.781343,
+    "lon": -80.06852,
+    "timezone": "Eastern",
+    "address": "838 W. 13th Court, Riviera Beach, FL, 33404"
+  },
+  {
+    "name": "Charleston",
+    "city": "North Charleston",
+    "state": "SC",
+    "street": "2532 Oscar Johnson Dr",
+    "zip": "29405",
+    "rvp": "Chris Regan",
+    "operationsManager": "Tremaine Grate",
+    "phone": "(843) 480-4333",
+    "extension": "6662",
+    "email": "charleston@allmysons.com",
+    "lat": 32.851206,
+    "lon": -79.976442,
+    "timezone": "Eastern",
+    "address": "2532 Oscar Johnson Dr, North Charleston, SC, 29405"
+  },
+  {
+    "name": "Charlotte",
+    "city": "Charlotte",
+    "state": "NC",
+    "street": "6901-B Northpark Blvd.",
+    "zip": "28216",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Michael Begy",
+    "phone": "(704) 568-7767",
+    "extension": "6526",
+    "email": "charlotte@allmysons.com",
+    "lat": 35.283377,
+    "lon": -80.870216,
+    "timezone": "Eastern",
+    "address": "6901-B Northpark Blvd., Charlotte, NC, 28216"
+  },
+  {
+    "name": "Charlotte South",
+    "city": "Pineville",
+    "state": "NC",
+    "street": "9930 Industrial Dr.",
+    "zip": "28134",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Jeffery Smith",
+    "phone": "(704) 413-3930",
+    "extension": "6671",
+    "email": "charlottesouth@allmysons.com",
+    "lat": 35.070942,
+    "lon": -80.885852,
+    "timezone": "Eastern",
+    "address": "9930 Industrial Dr., Pineville, NC, 28134"
+  },
+  {
+    "name": "Chattanooga",
+    "city": "Chattanooga",
+    "state": "TN",
+    "street": "115 Nowlin Lane, Suite 5000",
+    "zip": "37421",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Donahvan Adcox (AOM)",
+    "phone": "(423) 556-7829",
+    "extension": "9528",
+    "email": "Chattanooga@allmysons.com",
+    "lat": 35.024986,
+    "lon": -85.14594,
+    "timezone": "Eastern",
+    "address": "115 Nowlin Lane, Suite 5000, Chattanooga, TN, 37421"
+  },
+  {
+    "name": "Cherry Hill",
+    "city": "Cherry Hill",
+    "state": "NJ",
+    "street": "32 Coles Avenue",
+    "zip": "08002",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Tim Smith/Michael Eckert",
+    "phone": "(856) 924-6788",
+    "extension": "6697",
+    "email": "CherryHillAMS@allmysons.com",
+    "lat": 39.930808,
+    "lon": -75.017538,
+    "timezone": "Eastern",
+    "address": "32 Coles Avenue, Cherry Hill, NJ, 08002"
+  },
+  {
+    "name": "Chicago 2",
+    "city": "Franklin Park",
+    "state": "IL",
+    "street": "2740 N. Mannheim Rd",
+    "zip": "60131",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Angel Garcia-Vivas",
+    "phone": "(708) 345-4200",
+    "extension": "6694",
+    "email": "chicago@allmysons.com",
+    "lat": 41.933878,
+    "lon": -87.873423,
+    "timezone": "Central",
+    "address": "2740 N. Mannheim Rd, Franklin Park, IL, 60131"
+  },
+  {
+    "name": "Cincinnati",
+    "city": "Norwood",
+    "state": "OH",
+    "street": "3010 Harris Avenue",
+    "zip": "45212",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Erik Young (AOM)",
+    "phone": "(513) 454-6667",
+    "extension": "6531",
+    "email": "cincinnati@allmysons.com",
+    "lat": 39.162505,
+    "lon": -84.452765,
+    "timezone": "Eastern",
+    "address": "3010 Harris Avenue, Norwood, OH, 45212"
+  },
+  {
+    "name": "Cincinnati 2",
+    "city": "Fairfield",
+    "state": "OH",
+    "street": "3200 Homeward Way",
+    "zip": "45014",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Adam Berardo",
+    "phone": "(513) 949-4587",
+    "extension": "9541",
+    "email": "cincinnati2@allmysons.com",
+    "lat": 39.326602,
+    "lon": -84.547881,
+    "timezone": "Eastern",
+    "address": "3200 Homeward Way, Fairfield, OH, 45014"
+  },
+  {
+    "name": "Clarksville",
+    "city": "Clarksville",
+    "state": "TN",
+    "street": "2721 Union Hall Rd",
+    "zip": "37040",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Jessee Raetzel (AOM)",
+    "phone": "(931) 271-5947",
+    "extension": "6578",
+    "email": "clarksville@allmysons.com",
+    "lat": 36.522014,
+    "lon": -87.348997,
+    "timezone": "Central",
+    "address": "2721 Union Hall Rd, Clarksville, TN, 37040"
+  },
+  {
+    "name": "Cleveland",
+    "city": "Valley View",
+    "state": "OH",
+    "street": "7500 Wall Street",
+    "zip": "44125",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Drew Tate",
+    "phone": "(216) 242-2245",
+    "extension": "6696",
+    "email": "cleveland@allmysons.com",
+    "lat": 41.415792,
+    "lon": -81.605385,
+    "timezone": "Eastern",
+    "address": "7500 Wall Street, Valley View, OH, 44125"
+  },
+  {
+    "name": "Colorado Springs",
+    "city": "Colorado Springs",
+    "state": "CO",
+    "street": "4230 Clearview Frontage Road",
+    "zip": "80911",
+    "rvp": "Joel Ronn",
+    "operationsManager": "Lisa O'Connell",
+    "phone": "(719) 452-4141",
+    "extension": "6656",
+    "email": "coloradosprings@allmysons.com",
+    "lat": 38.745665,
+    "lon": -104.722322,
+    "timezone": "Mountain",
+    "address": "4230 Clearview Frontage Road, Colorado Springs, CO, 80911"
+  },
+  {
+    "name": "Columbia",
+    "city": "Columbia",
+    "state": "SC",
+    "street": "945 Idlewild Blvd",
+    "zip": "29201",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Joshua Hammonds",
+    "phone": "",
+    "extension": "6551",
+    "email": "greenville@allmysons.com",
+    "lat": 34.0004,
+    "lon": -81.033418,
+    "timezone": "Eastern",
+    "address": "945 Idlewild Blvd, Columbia, SC, 29201"
+  },
+  {
+    "name": "Columbus",
+    "city": "Hilliard",
+    "state": "OH",
+    "street": "4401 Lyman Drive. Ste D",
+    "zip": "43026",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Heather Lee",
+    "phone": "(614) 336-3280",
+    "extension": "6641",
+    "email": "columbus@allmysons.com",
+    "lat": 40.032187,
+    "lon": -83.138333,
+    "timezone": "Eastern",
+    "address": "4401 Lyman Drive. Ste D, Hilliard, OH, 43026"
+  },
+  {
+    "name": "Columbus 2",
+    "city": "Gahanna",
+    "state": "OH",
+    "street": "790 Science Blvd.",
+    "zip": "43230",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Zuriegh Carter",
+    "phone": "(614) 992-8001",
+    "extension": "9527",
+    "email": "columbus2@allmysons.com",
+    "lat": 40.038458,
+    "lon": -82.882429,
+    "timezone": "Eastern",
+    "address": "790 Science Blvd., Gahanna, OH, 43230"
+  },
+  {
+    "name": "Connecticut",
+    "city": "Stratford",
+    "state": "CT",
+    "street": "480 Lordship Blvd.",
+    "zip": "06615",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Bruce Hurt",
+    "phone": "(203) 388-0094",
+    "extension": "6534",
+    "email": "connecticut@allmysons.com",
+    "lat": 41.2044,
+    "lon": -73.135594,
+    "timezone": "Eastern",
+    "address": "480 Lordship Blvd., Stratford, CT, 06615"
+  },
+  {
+    "name": "Corpus Christi",
+    "city": "Corpus Christi",
+    "state": "TX",
+    "street": "210 N. Brownlee Blvd.",
+    "zip": "78401",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Nate Brabson",
+    "phone": "(361) 883-1372",
+    "extension": "6537",
+    "email": "corpuschristi@allmysons.com",
+    "lat": 27.794086,
+    "lon": -97.402994,
+    "timezone": "Central",
+    "address": "210 N. Brownlee Blvd., Corpus Christi, TX, 78401"
+  },
+  {
+    "name": "Dallas",
+    "city": "Carrollton",
+    "state": "TX",
+    "street": "2400 Old Mill Road",
+    "zip": "75007",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Sami Alafandi",
+    "phone": "(972) 367-1095",
+    "extension": "6541",
+    "email": "dallas@allmysons.com",
+    "lat": 33.003294,
+    "lon": -96.881988,
+    "timezone": "Central",
+    "address": "2400 Old Mill Road, Carrollton, TX, 75007"
+  },
+  {
+    "name": "Dallas Downtown",
+    "city": "Dallas",
+    "state": "TX",
+    "street": "8156 Moberly Lane",
+    "zip": "75227",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Danny McNally",
+    "phone": "(469) 707-8317",
+    "extension": "9501",
+    "email": "dallasdowntown@allmysons.com",
+    "lat": 32.767226,
+    "lon": -96.683586,
+    "timezone": "Central",
+    "address": "8156 Moberly Lane, Dallas, TX, 75227"
+  },
+  {
+    "name": "Denton",
+    "city": "Denton",
+    "state": "TX",
+    "street": "3801 North I-35 Suite 142",
+    "zip": "76207",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Micah Stone",
+    "phone": "(940) 341-2709",
+    "extension": "6691",
+    "email": "denton@allmysons.com",
+    "lat": 33.22893,
+    "lon": -97.131436,
+    "timezone": "Central",
+    "address": "3801 North I-35 Suite 142, Denton, TX, 76207"
+  },
+  {
+    "name": "Denver",
+    "city": "Denver",
+    "state": "CO",
+    "street": "4825 Lima Street",
+    "zip": "80239",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Tony Koch",
+    "phone": "(303) 329-3217",
+    "extension": "6542",
+    "email": "denver@allmysons.com",
+    "lat": 39.787757,
+    "lon": -104.828837,
+    "timezone": "Mountain",
+    "address": "4825 Lima Street, Denver, CO, 80239"
+  },
+  {
+    "name": "Des Moines",
+    "city": "Des Moines",
+    "state": "IA",
+    "street": "1751-B Guthrie Avenue",
+    "zip": "50313",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Michael Johnston",
+    "phone": "(515) 579-5260",
+    "extension": "9537",
+    "email": "desmoines@allmysons.com",
+    "lat": 41.638085,
+    "lon": -93.620305,
+    "timezone": "Central",
+    "address": "1751-B Guthrie Avenue, Des Moines, IA, 50313"
+  },
+  {
+    "name": "Detroit",
+    "city": "Oak Park",
+    "state": "MI",
+    "street": "13220 Cloverdale St. Suite C",
+    "zip": "48237",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Craig Clodfelter",
+    "phone": "(313) 631-8189",
+    "extension": "9521",
+    "email": "detroit@allmysons.com",
+    "lat": 42.466151,
+    "lon": -83.183993,
+    "timezone": "Eastern",
+    "address": "13220 Cloverdale St. Suite C, Oak Park, MI, 48237"
+  },
+  {
+    "name": "El Paso",
+    "city": "El Paso",
+    "state": "TX",
+    "street": "820 Kastrin Street",
+    "zip": "79907",
+    "rvp": "Brian Lohnes",
+    "operationsManager": "Arturo Duarte",
+    "phone": "(915) 245-3030",
+    "extension": "6663",
+    "email": "elpaso@allmysons.com",
+    "lat": 31.708908,
+    "lon": -106.329281,
+    "timezone": "Mountain",
+    "address": "820 Kastrin Street, El Paso, TX, 79907"
+  },
+  {
+    "name": "Fayetteville",
+    "city": "Springdale",
+    "state": "AR",
+    "street": "300 Industrial Dr",
+    "zip": "72762",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Antwone Moore",
+    "phone": "",
+    "extension": "6614",
+    "email": "tulsa@allmysons.com",
+    "lat": 36.183521,
+    "lon": -94.176216,
+    "timezone": "Central",
+    "address": "300 Industrial Dr, Springdale, AR, 72762"
+  },
+  {
+    "name": "Fenton",
+    "city": "St. Louis",
+    "state": "MO",
+    "street": "7737 Watson Rd",
+    "zip": "63119",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Anthony Guess",
+    "phone": "",
+    "extension": "6639",
+    "email": "stlouis@allmysons.com",
+    "lat": 38.588853,
+    "lon": -90.350807,
+    "timezone": "Central",
+    "address": "7737 Watson Rd, St. Louis, MO, 63119"
+  },
+  {
+    "name": "Fort Lauderdale",
+    "city": "Pompano Beach",
+    "state": "FL",
+    "street": "3762 Park Central Blvd North",
+    "zip": "33064",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Mark Clair",
+    "phone": "(954) 712-2312",
+    "extension": "6545",
+    "email": "fortlauderdale@allmysons.com",
+    "lat": 26.278698,
+    "lon": -80.112439,
+    "timezone": "Eastern",
+    "address": "3762 Park Central Blvd North, Pompano Beach, FL, 33064"
+  },
+  {
+    "name": "Fort Worth",
+    "city": "Fort Worth",
+    "state": "TX",
+    "street": "600 Railhead Road Suite 220",
+    "zip": "76106",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Carlos Avila",
+    "phone": "(817) 583-7740",
+    "extension": "6661",
+    "email": "fortworth@allmysons.com",
+    "lat": 32.796849,
+    "lon": -97.356008,
+    "timezone": "Central",
+    "address": "600 Railhead Road Suite 220, Fort Worth, TX, 76106"
+  },
+  {
+    "name": "Fredricksburgh",
+    "city": "Fredricksburgh",
+    "state": "VA",
+    "street": "8716 Patriot Hwy",
+    "zip": "22407",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Jason Cruz",
+    "phone": "",
+    "extension": "9523",
+    "email": "virginianorth@allmysons.com",
+    "lat": 38.268803,
+    "lon": -77.547584,
+    "timezone": "Eastern",
+    "address": "8716 Patriot Hwy, Fredricksburgh, VA, 22407"
+  },
+  {
+    "name": "Greensboro",
+    "city": "Greensboro",
+    "state": "NC",
+    "street": "2120 Servomation Rd. Building #2",
+    "zip": "27407",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Alec Howard",
+    "phone": "(336) 203-8218",
+    "extension": "6698",
+    "email": "greensboro@allmysons.com",
+    "lat": 36.033442,
+    "lon": -79.862647,
+    "timezone": "Eastern",
+    "address": "2120 Servomation Rd. Building #2, Greensboro, NC, 27407"
+  },
+  {
+    "name": "Greenville",
+    "city": "Greenville",
+    "state": "SC",
+    "street": "126 Woodruff Industrial Lane",
+    "zip": "29607",
+    "rvp": "Chris Regan",
+    "operationsManager": "Joshua Hammonds",
+    "phone": "(864) 962-9000",
+    "extension": "6551",
+    "email": "greenville@allmysons.com",
+    "lat": 34.828507,
+    "lon": -82.35155,
+    "timezone": "Eastern",
+    "address": "126 Woodruff Industrial Lane, Greenville, SC, 29607"
+  },
+  {
+    "name": "Hartford",
+    "city": "Hartford",
+    "state": "CT",
+    "street": "40 Airport Road",
+    "zip": "06114",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Frank Amodio Jr.",
+    "phone": "(304) 969-7069",
+    "extension": "9524",
+    "email": "hartford@allmysons.com",
+    "lat": 41.740293,
+    "lon": -72.680726,
+    "timezone": "Eastern",
+    "address": "40 Airport Road, Hartford, CT, 06114"
+  },
+  {
+    "name": "Highland Park",
+    "city": "Highland Park",
+    "state": "IL",
+    "street": "1505 Old Deerfield Rd",
+    "zip": "60035",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Andy Barriga/ Yolanda Oquendo",
+    "phone": "",
+    "extension": "6694",
+    "email": "chicago2@allmysons.com",
+    "lat": 42.179446,
+    "lon": -87.805894,
+    "timezone": "Central",
+    "address": "1505 Old Deerfield Rd, Highland Park, IL, 60035"
+  },
+  {
+    "name": "Hilton Head",
+    "city": "Bluffton",
+    "state": "SC",
+    "street": "102 Bluffton Road",
+    "zip": "29910",
+    "rvp": "Chris Regan",
+    "operationsManager": "Paul Carson (AOM)",
+    "phone": "(843) 757-2100",
+    "extension": "6508",
+    "email": "hiltonhead@allmysons.com",
+    "lat": 32.251275,
+    "lon": -80.872079,
+    "timezone": "Eastern",
+    "address": "102 Bluffton Road, Bluffton, SC, 29910"
+  },
+  {
+    "name": "Houston",
+    "city": "Houston",
+    "state": "TX",
+    "street": "9550 W Wingfoot Rd Suite 190",
+    "zip": "77041",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Brett Peterson",
+    "phone": "(281) 668-1071",
+    "extension": "6556",
+    "email": "houston@allmysons.com",
+    "lat": 29.860187,
+    "lon": -95.581663,
+    "timezone": "Central",
+    "address": "9550 W Wingfoot Rd Suite 190, Houston, TX, 77041"
+  },
+  {
+    "name": "Houston North",
+    "city": "Houston",
+    "state": "TX",
+    "street": "22215 Cypress Slough Dr",
+    "zip": "77073",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Vinny Durney",
+    "phone": "(281) 292-6323",
+    "extension": "6674",
+    "email": "thewoodlands@allmysons.com",
+    "lat": 30.019767,
+    "lon": -95.408671,
+    "timezone": "Central",
+    "address": "22215 Cypress Slough Dr, Houston, TX, 77073"
+  },
+  {
+    "name": "Indianapolis",
+    "city": "Indianapolis",
+    "state": "IN",
+    "street": "2817 E 55th Place, Suite 103",
+    "zip": "46220",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Chris Monroe",
+    "phone": "(317) 354-2204",
+    "extension": "6559",
+    "email": "indianapolis@allmysons.com",
+    "lat": 39.864685,
+    "lon": -86.11815,
+    "timezone": "Eastern",
+    "address": "2817 E 55th Place, Suite 103, Indianapolis, IN, 46220"
+  },
+  {
+    "name": "Indianapolis 2",
+    "city": "Indianapolis",
+    "state": "IN",
+    "street": "2817 E 55th Place, Suite 103",
+    "zip": "46220",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "EJ Echelbarger",
+    "phone": "(463) 223-2728",
+    "extension": "9533",
+    "email": "indianapolissouth@allmysons.com",
+    "lat": 39.864685,
+    "lon": -86.11815,
+    "timezone": "Eastern",
+    "address": "2817 E 55th Place, Suite 103, Indianapolis, IN, 46220"
+  },
+  {
+    "name": "Jacksonville",
+    "city": "Jacksonville",
+    "state": "FL",
+    "street": "1057 Ellis Road N, Suite 17",
+    "zip": "32254",
+    "rvp": "Clay Morgan",
+    "operationsManager": "Clay Morgan",
+    "phone": "(904) 642-6900",
+    "extension": "6562",
+    "email": "jacksonville@allmysons.com",
+    "lat": 30.329882,
+    "lon": -81.651672,
+    "timezone": "Eastern",
+    "address": "1057 Ellis Road N, Suite 17, Jacksonville, FL, 32254"
+  },
+  {
+    "name": "Jacksonville South",
+    "city": "Jacksonville",
+    "state": "FL",
+    "street": "9617 Florida Mining Blvd E",
+    "zip": "32257",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Clay Morgan",
+    "phone": "",
+    "extension": "6562",
+    "email": "jacksonville@allmysons.com",
+    "lat": 30.192703,
+    "lon": -81.605042,
+    "timezone": "Eastern",
+    "address": "9617 Florida Mining Blvd E, Jacksonville, FL, 32257"
+  },
+  {
+    "name": "Kansas City",
+    "city": "Kansas City",
+    "state": "MO",
+    "street": "7084 Universal Ave",
+    "zip": "64120",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Matthew Inman",
+    "phone": "(816) 410-0658",
+    "extension": "6637",
+    "email": "kansascity@allmysons.com",
+    "lat": 39.122206,
+    "lon": -94.54873,
+    "timezone": "Central",
+    "address": "7084 Universal Ave, Kansas City, MO, 64120"
+  },
+  {
+    "name": "Kansas City-Micro",
+    "city": "Kansas City",
+    "state": "KS",
+    "street": "37 S James Street",
+    "zip": "66118",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Matthew Inman",
+    "phone": "",
+    "extension": "6637",
+    "email": "kansascity@allmysons.com",
+    "lat": 39.096867,
+    "lon": -94.608361,
+    "timezone": "Central",
+    "address": "37 S James Street, Kansas City, KS, 66118"
+  },
+  {
+    "name": "Katy (1)",
+    "city": "Katy",
+    "state": "TX",
+    "street": "3433 Fry Road",
+    "zip": "77449",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Brett Peterson",
+    "phone": "",
+    "extension": "6556",
+    "email": "houston@allmysons.com",
+    "lat": 29.819922,
+    "lon": -95.729267,
+    "timezone": "Central",
+    "address": "3433 Fry Road, Katy, TX, 77449"
+  },
+  {
+    "name": "Knoxville",
+    "city": "Knoxville",
+    "state": "TN",
+    "street": "509 Lovell Road",
+    "zip": "37932",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Ryan Simpler",
+    "phone": "(865) 675-1556",
+    "extension": "6640",
+    "email": "knoxville@allmysons.com",
+    "lat": 35.923619,
+    "lon": -84.169591,
+    "timezone": "Eastern",
+    "address": "509 Lovell Road, Knoxville, TN, 37932"
+  },
+  {
+    "name": "Las Vegas",
+    "city": "North Las Vegas",
+    "state": "NV",
+    "street": "2975 Coleman Street",
+    "zip": "89032",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Bobby Obradovitch",
+    "phone": "(702) 651-1520",
+    "extension": "6565",
+    "email": "lasvegas@allmysons.com",
+    "lat": 36.4475,
+    "lon": -114.851389,
+    "timezone": "Pacific",
+    "address": "2975 Coleman Street, North Las Vegas, NV, 89032"
+  },
+  {
+    "name": "Lexington",
+    "city": "Lexington",
+    "state": "KY",
+    "street": "1003 Whipple Ct.",
+    "zip": "40511",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Larry Myers (Ops)",
+    "phone": "(502) 871-3515",
+    "extension": "9539",
+    "email": "lexington@allmysons.com",
+    "lat": 38.093233,
+    "lon": -84.500671,
+    "timezone": "Eastern",
+    "address": "1003 Whipple Ct., Lexington, KY, 40511"
+  },
+  {
+    "name": "Little Rock",
+    "city": "Little Rock",
+    "state": "AR",
+    "street": "6615 Murray Street",
+    "zip": "72209",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Jian Allen",
+    "phone": "(501) 562-5700",
+    "extension": "6568",
+    "email": "littlerock@allmysons.com",
+    "lat": 34.672509,
+    "lon": -92.352919,
+    "timezone": "Central",
+    "address": "6615 Murray Street, Little Rock, AR, 72209"
+  },
+  {
+    "name": "Louisville",
+    "city": "Louisville",
+    "state": "KY",
+    "street": "3865 Produce Rd, Suite 210",
+    "zip": "40218",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Larry Myers (Ops)",
+    "phone": "(502) 871-3515",
+    "extension": "6648",
+    "email": "louisville@allmysons.com",
+    "lat": 38.191084,
+    "lon": -85.654834,
+    "timezone": "Eastern",
+    "address": "3865 Produce Rd, Suite 210, Louisville, KY, 40218"
+  },
+  {
+    "name": "Maryland",
+    "city": "Linthicum Heights",
+    "state": "MD",
+    "street": "1015 W. Nursery Rd., Ste 113",
+    "zip": "21090",
+    "rvp": "Jeremy Andrews",
+    "operationsManager": "Keon Jones",
+    "phone": "(410) 247-6611",
+    "extension": "6513",
+    "email": "maryland@allmysons.com",
+    "lat": 39.208331,
+    "lon": -76.657477,
+    "timezone": "Eastern",
+    "address": "1015 W. Nursery Rd., Ste 113, Linthicum Heights, MD, 21090"
+  },
+  {
+    "name": "McKinney",
+    "city": "McKinney",
+    "state": "TX",
+    "street": "215 E. University Dr. Suite 200",
+    "zip": "75069",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Jensen Weir/Doug Reiff",
+    "phone": "(972) 521-3771",
+    "extension": "6672",
+    "email": "mckinney@allmysons.com",
+    "lat": 33.196558,
+    "lon": -96.608488,
+    "timezone": "Central",
+    "address": "215 E. University Dr. Suite 200, McKinney, TX, 75069"
+  },
+  {
+    "name": "Memphis",
+    "city": "Memphis",
+    "state": "TN",
+    "street": "5454 Summer Avenue",
+    "zip": "38134",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "David Bullard",
+    "phone": "(901) 248-0548",
+    "extension": "6647",
+    "email": "memphis@allmysons.com",
+    "lat": 35.188639,
+    "lon": -89.86409,
+    "timezone": "Central",
+    "address": "5454 Summer Avenue, Memphis, TN, 38134"
+  },
+  {
+    "name": "Mesa",
+    "city": "Tempe",
+    "state": "AZ",
+    "street": "1115 W Alameda Drive, Building B",
+    "zip": "85282",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Richard Dominguez",
+    "phone": "(480) 405-3194",
+    "extension": "9531",
+    "email": "mesa@allmysons.com",
+    "lat": 33.391669,
+    "lon": -111.924896,
+    "timezone": "Mountain",
+    "address": "1115 W Alameda Drive, Building B, Tempe, AZ, 85282"
+  },
+  {
+    "name": "Miami",
+    "city": "Hialeah",
+    "state": "FL",
+    "street": "987 SE 11 Place",
+    "zip": "33010",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Stephen Staffieri",
+    "phone": "(305) 787-3335",
+    "extension": "6669",
+    "email": "miami@allmysons.com",
+    "lat": 25.832536,
+    "lon": -80.280801,
+    "timezone": "Eastern",
+    "address": "987 SE 11 Place, Hialeah, FL, 33010"
+  },
+  {
+    "name": "Milwaukee",
+    "city": "Milwaukee",
+    "state": "WI",
+    "street": "201 S Hawley Ct.",
+    "zip": "53214",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Todd Krueger",
+    "phone": "(414) 895-5086",
+    "extension": "6575",
+    "email": "milwaukee@allmysons.com",
+    "lat": 43.019113,
+    "lon": -88.010757,
+    "timezone": "Central",
+    "address": "201 S Hawley Ct., Milwaukee, WI, 53214"
+  },
+  {
+    "name": "Mobile",
+    "city": "Mobile",
+    "state": "AL",
+    "street": "5228 Halls Mill Road, Suite A",
+    "zip": "36619",
+    "rvp": "Chris Regan",
+    "operationsManager": "Quinn Schwalier (AOM)",
+    "phone": "(251) 262-9288",
+    "extension": "9536",
+    "email": "mobile@allmysons.com",
+    "lat": 30.592803,
+    "lon": -88.194645,
+    "timezone": "Central",
+    "address": "5228 Halls Mill Road, Suite A, Mobile, AL, 36619"
+  },
+  {
+    "name": "Murfreesboro",
+    "city": "Murfreesboro",
+    "state": "TN",
+    "street": "708 Cpt. Joe Fulghum Dr. Ste B",
+    "zip": "37129",
+    "rvp": "Carey O'Brien",
+    "operationsManager": "Scott Kersey",
+    "phone": "(615) 617-6977",
+    "extension": "6677",
+    "email": "murfreesboro@allmysons.com",
+    "lat": 35.871019,
+    "lon": -86.41809,
+    "timezone": "Central",
+    "address": "708 Cpt. Joe Fulghum Dr. Ste B, Murfreesboro, TN, 37129"
+  },
+  {
+    "name": "Myrtle Beach",
+    "city": "Myrtle Beach",
+    "state": "SC",
+    "street": "1361 Stockholder Ave.",
+    "zip": "29577",
+    "rvp": "Chris Regan",
+    "operationsManager": "Joseph Gryzbowski",
+    "phone": "(843) 580-5020",
+    "extension": "9519",
+    "email": "myrtlebeach@allmysons.com",
+    "lat": 33.699363,
+    "lon": -78.913697,
+    "timezone": "Eastern",
+    "address": "1361 Stockholder Ave., Myrtle Beach, SC, 29577"
+  },
+  {
+    "name": "Naples",
+    "city": "Fort Myers",
+    "state": "FL",
+    "street": "14660 Jetport Lp. Suite 7",
+    "zip": "33913",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Louis Scaglione",
+    "phone": "(239) 330-6786",
+    "extension": "6657",
+    "email": "naples@allmysons.com",
+    "lat": 26.522808,
+    "lon": -81.706469,
+    "timezone": "Eastern",
+    "address": "14660 Jetport Lp. Suite 7, Fort Myers, FL, 33913"
+  },
+  {
+    "name": "Nashville",
+    "city": "Nashville",
+    "state": "TN",
+    "street": "2709 Locust Street",
+    "zip": "37207",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Jessee Raetzel (AOM)",
+    "phone": "(615) 650-3261",
+    "extension": "6578",
+    "email": "nashville@allmysons.com",
+    "lat": 36.2195,
+    "lon": -86.774008,
+    "timezone": "Central",
+    "address": "2709 Locust Street, Nashville, TN, 37207"
+  },
+  {
+    "name": "New City Moving",
+    "city": "Chicago",
+    "state": "IL",
+    "street": "2929 N Campbell",
+    "zip": "60618",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Andy Barriga/Yolanda Oquendo",
+    "phone": "(800) 733-6644",
+    "extension": "3608",
+    "email": "chicagonewcity@allmysons.com",
+    "lat": 41.946401,
+    "lon": -87.704214,
+    "timezone": "Central",
+    "address": "2929 N Campbell, Chicago, IL, 60618"
+  },
+  {
+    "name": "New Orleans",
+    "city": "Elmwood",
+    "state": "LA",
+    "street": "1405 Kuebel Street",
+    "zip": "70123",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Jermaine Watts",
+    "phone": "(504) 370-0637",
+    "extension": "9516",
+    "email": "neworleansAMS@allmysons.com",
+    "lat": 29.953473,
+    "lon": -90.210748,
+    "timezone": "Central",
+    "address": "1405 Kuebel Street, Elmwood, LA, 70123"
+  },
+  {
+    "name": "Newport News",
+    "city": "Newport News",
+    "state": "VA",
+    "street": "703 Gum Rock Court",
+    "zip": "23606",
+    "rvp": "Jeremy Andrews",
+    "operationsManager": "Charmers Redd",
+    "phone": "(804) 409-0814",
+    "extension": "6693",
+    "email": "newportnews@allmysons.com",
+    "lat": 37.076777,
+    "lon": -76.496724,
+    "timezone": "Eastern",
+    "address": "703 Gum Rock Court, Newport News, VA, 23606"
+  },
+  {
+    "name": "Ogden",
+    "city": "Clearfield",
+    "state": "UT",
+    "street": "D-16 Freeport Center",
+    "zip": "84016",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Conlin Hooley",
+    "phone": "",
+    "extension": "6602",
+    "email": "saltlakecity@allmysons.com",
+    "lat": 41.129388,
+    "lon": -112.048224,
+    "timezone": "Mountain",
+    "address": "D-16 Freeport Center, Clearfield, UT, 84016"
+  },
+  {
+    "name": "Oklahoma City",
+    "city": "Midwest City",
+    "state": "OK",
+    "street": "6200 Tinker Diagonal",
+    "zip": "73110",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Ryan Hoff",
+    "phone": "(405) 415-4159",
+    "extension": "6583",
+    "email": "oklahomacity@allmysons.com",
+    "lat": 35.461978,
+    "lon": -97.397661,
+    "timezone": "Central",
+    "address": "6200 Tinker Diagonal, Midwest City, OK, 73110"
+  },
+  {
+    "name": "Omaha",
+    "city": "Omaha",
+    "state": "NE",
+    "street": "8611 F Street",
+    "zip": "68127",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Samuel McMillin",
+    "phone": "(402) 972-4606",
+    "extension": "6659",
+    "email": "omaha@allmysons.com",
+    "lat": 41.201782,
+    "lon": -96.055019,
+    "timezone": "Central",
+    "address": "8611 F Street, Omaha, NE, 68127"
+  },
+  {
+    "name": "Orlando",
+    "city": "Orlando",
+    "state": "FL",
+    "street": "639 W Robinson St.",
+    "zip": "32801",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Nicholas Carter",
+    "phone": "(407) 650-0200",
+    "extension": "6584",
+    "email": "orlando@allmysons.com",
+    "lat": 28.539882,
+    "lon": -81.372668,
+    "timezone": "Eastern",
+    "address": "639 W Robinson St., Orlando, FL, 32801"
+  },
+  {
+    "name": "Pensacola",
+    "city": "Pensacola",
+    "state": "FL",
+    "street": "3495 N. Alacaniz St.",
+    "zip": "32503",
+    "rvp": "Chris Regan",
+    "operationsManager": "Russell Schwalier",
+    "phone": "(850) 435-0991",
+    "extension": "6587",
+    "email": "pensacola@allmysons.com",
+    "lat": 30.456406,
+    "lon": -87.210432,
+    "timezone": "Central",
+    "address": "3495 N. Alacaniz St., Pensacola, FL, 32503"
+  },
+  {
+    "name": "Philadelphia",
+    "city": "Philadelphia",
+    "state": "PA",
+    "street": "6800 Essington Ave,",
+    "zip": "19153",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Tim Smith/Michael Eckert",
+    "phone": "",
+    "extension": "6697",
+    "email": "cherryhill@allmysons.com",
+    "lat": 39.905512,
+    "lon": -75.244431,
+    "timezone": "Eastern",
+    "address": "6800 Essington Ave,, Philadelphia, PA, 19153"
+  },
+  {
+    "name": "Phoenix",
+    "city": "Phoenix",
+    "state": "AZ",
+    "street": "4012 W. Turney Ave Suite B1",
+    "zip": "85019",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Robert Espinoza / Daylon Gordon",
+    "phone": "(602) 281-1141",
+    "extension": "6592",
+    "email": "phoenix@allmysons.com",
+    "lat": 33.512284,
+    "lon": -112.141681,
+    "timezone": "Mountain",
+    "address": "4012 W. Turney Ave Suite B1, Phoenix, AZ, 85019"
+  },
+  {
+    "name": "Pittsburgh",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "street": "150 54th Street",
+    "zip": "15201",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Michael Dunne (AOM)",
+    "phone": "(412) 413-9138",
+    "extension": "6688",
+    "email": "pittsburgh@allmysons.com",
+    "lat": 40.474536,
+    "lon": -79.952524,
+    "timezone": "Eastern",
+    "address": "150 54th Street, Pittsburgh, PA, 15201"
+  },
+  {
+    "name": "Pittsburgh Micro",
+    "city": "Bridgeville",
+    "state": "PA",
+    "street": "102 Vanadium Rd",
+    "zip": "15017",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Michael Dunne (AOM)",
+    "phone": "",
+    "extension": "6688",
+    "email": "pittsburgh@allmysons.com",
+    "lat": 40.347195,
+    "lon": -80.115293,
+    "timezone": "Eastern",
+    "address": "102 Vanadium Rd, Bridgeville, PA, 15017"
+  },
+  {
+    "name": "Port Charlotte",
+    "city": "Port Charlotte",
+    "state": "FL",
+    "street": "2080 Tamiami Trl",
+    "zip": "33948",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Louis Scaglione",
+    "phone": "",
+    "extension": "6657",
+    "email": "naples@allmysons.com",
+    "lat": 26.98268,
+    "lon": -82.141173,
+    "timezone": "Eastern",
+    "address": "2080 Tamiami Trl, Port Charlotte, FL, 33948"
+  },
+  {
+    "name": "Portland",
+    "city": "Clackamas",
+    "state": "OR",
+    "street": "12470 South East Highway 212",
+    "zip": "97015",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Jeff Stone",
+    "phone": "(503) 387-5140",
+    "extension": "7606",
+    "email": "portland@allmysons.com",
+    "lat": 45.414992,
+    "lon": -122.52005,
+    "timezone": "Pacific",
+    "address": "12470 South East Highway 212, Clackamas, OR, 97015"
+  },
+  {
+    "name": "Portland 2",
+    "city": "Portland",
+    "state": "OR",
+    "street": "10821 North Lombard",
+    "zip": "97203",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Jeff Stone",
+    "phone": "(971) 299-7435",
+    "extension": "9534",
+    "email": "portland2@allmysons.com",
+    "lat": 45.588872,
+    "lon": -122.734699,
+    "timezone": "Pacific",
+    "address": "10821 North Lombard, Portland, OR, 97203"
+  },
+  {
+    "name": "Raleigh",
+    "city": "Raleigh",
+    "state": "NC",
+    "street": "7417 ACC Blvd.",
+    "zip": "27617",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Jonathan Wright",
+    "phone": "(919) 875-1700",
+    "extension": "6664",
+    "email": "raleigh@allmysons.com",
+    "lat": 35.772701,
+    "lon": -78.632439,
+    "timezone": "Eastern",
+    "address": "7417 ACC Blvd., Raleigh, NC, 27617"
+  },
+  {
+    "name": "Raleigh South",
+    "city": "Garner",
+    "state": "NC",
+    "street": "3800 Centurion Drive, #109",
+    "zip": "27529",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Timothy Sanborn",
+    "phone": "(919) 372-3399",
+    "extension": "6692",
+    "email": "raleighsouth@allmysons.com",
+    "lat": 35.681254,
+    "lon": -78.597527,
+    "timezone": "Eastern",
+    "address": "3800 Centurion Drive, #109, Garner, NC, 27529"
+  },
+  {
+    "name": "Raleigh South Micro",
+    "city": "Fayetteville",
+    "state": "NC",
+    "street": "5799 Pepperbush Dr.",
+    "zip": "28304",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Timothy Sanborn",
+    "phone": "(919) 372-3399",
+    "extension": "6692",
+    "email": "raleighsouth@allmysons.com",
+    "lat": 35.025683,
+    "lon": -78.970494,
+    "timezone": "Eastern",
+    "address": "5799 Pepperbush Dr., Fayetteville, NC, 28304"
+  },
+  {
+    "name": "Rhode Island",
+    "city": "Providence",
+    "state": "RI",
+    "street": "50 Houghton Street",
+    "zip": "02904",
+    "rvp": "Kenon Furlong",
+    "operationsManager": "Jonathan Menard",
+    "phone": "(401) 854-1500",
+    "extension": "6649",
+    "email": "rhodeisland@allmysons.com",
+    "lat": 41.860461,
+    "lon": -71.438102,
+    "timezone": "Eastern",
+    "address": "50 Houghton Street, Providence, RI, 02904"
+  },
+  {
+    "name": "Richmond",
+    "city": "Mechanicsville",
+    "state": "VA",
+    "street": "8176 Mechanicsville Turnpike, Bldg B",
+    "zip": "23111",
+    "rvp": "Jeremy Andrews",
+    "operationsManager": "Oscar Serrano",
+    "phone": "(804) 649-2000",
+    "extension": "6676",
+    "email": "richmond@allmysons.com",
+    "lat": 37.628146,
+    "lon": -77.339464,
+    "timezone": "Eastern",
+    "address": "8176 Mechanicsville Turnpike, Bldg B, Mechanicsville, VA, 23111"
+  },
+  {
+    "name": "Salem",
+    "city": "Salem",
+    "state": "OR",
+    "street": "3736 Kashmir Way SE",
+    "zip": "97317",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Jeff Stone",
+    "phone": "",
+    "extension": "6593",
+    "email": "portland@allmysons.com",
+    "lat": 44.926039,
+    "lon": -122.979692,
+    "timezone": "Pacific",
+    "address": "3736 Kashmir Way SE, Salem, OR, 97317"
+  },
+  {
+    "name": "Salt Lake City",
+    "city": "West Valley",
+    "state": "UT",
+    "street": "2406 South 3270 West",
+    "zip": "84119",
+    "rvp": "Brian Lohnes",
+    "operationsManager": "Conlin Hooley",
+    "phone": "(801) 364-9100",
+    "extension": "6602",
+    "email": "saltlakecity@allmysons.com",
+    "lat": 40.690977,
+    "lon": -111.952964,
+    "timezone": "Mountain",
+    "address": "2406 South 3270 West, West Valley, UT, 84119"
+  },
+  {
+    "name": "San Antonio",
+    "city": "San Antonio",
+    "state": "TX",
+    "street": "10026 North IH-35. Suite 2A",
+    "zip": "78233",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Stephen Pompa",
+    "phone": "(210) 225-8700",
+    "extension": "6605",
+    "email": "sanantonio@allmysons.com",
+    "lat": 29.554741,
+    "lon": -98.369128,
+    "timezone": "Central",
+    "address": "10026 North IH-35. Suite 2A, San Antonio, TX, 78233"
+  },
+  {
+    "name": "San Antonio South",
+    "city": "San Antonio",
+    "state": "TX",
+    "street": "15150 Tradesman Drive",
+    "zip": "78249",
+    "rvp": "Victor Davanzo",
+    "operationsManager": "Stephen Pompa",
+    "phone": "(210) 899-6338",
+    "extension": "6687",
+    "email": "sanantoniosouth@allmysons.com",
+    "lat": 29.561245,
+    "lon": -98.611666,
+    "timezone": "Central",
+    "address": "15150 Tradesman Drive, San Antonio, TX, 78249"
+  },
+  {
+    "name": "San Marcos Micro",
+    "city": "San Marcos",
+    "state": "TX",
+    "street": "202 Coachman Dr",
+    "zip": "78666",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Gerardo Maldonado",
+    "phone": "",
+    "extension": "6686",
+    "email": "austinsouth@allmysons.com",
+    "lat": 29.875359,
+    "lon": -97.940418,
+    "timezone": "Central",
+    "address": "202 Coachman Dr, San Marcos, TX, 78666"
+  },
+  {
+    "name": "Sanford",
+    "city": "Lake Mary",
+    "state": "FL",
+    "street": "610 Rinehart Rd",
+    "zip": "32746",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Nick Carter",
+    "phone": "",
+    "extension": "6584",
+    "email": "orlando@allmysons.com",
+    "lat": 28.752352,
+    "lon": -81.338075,
+    "timezone": "Eastern",
+    "address": "610 Rinehart Rd, Lake Mary, FL, 32746"
+  },
+  {
+    "name": "Sarasota",
+    "city": "Sarasota",
+    "state": "FL",
+    "street": "7155 16th St E #114",
+    "zip": "34243",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Matthew Roberts",
+    "phone": "(941) 541-4595",
+    "extension": "9517",
+    "email": "tampa@allmysons.com",
+    "lat": 27.407235,
+    "lon": -82.530299,
+    "timezone": "Eastern",
+    "address": "7155 16th St E #114, Sarasota, FL, 34243"
+  },
+  {
+    "name": "Savannah",
+    "city": "Savannah",
+    "state": "GA",
+    "street": "112 Central Junction Blvd",
+    "zip": "31405",
+    "rvp": "Chris Regan",
+    "operationsManager": "Justin Schreiber",
+    "phone": "(912) 574-2383",
+    "extension": "9520",
+    "email": "savannah@allmysons.com",
+    "lat": 32.039119,
+    "lon": -81.124192,
+    "timezone": "Eastern",
+    "address": "112 Central Junction Blvd, Savannah, GA, 31405"
+  },
+  {
+    "name": "Seattle",
+    "city": "Tukwila",
+    "state": "WA",
+    "street": "565 Andover Park W #100",
+    "zip": "98188",
+    "rvp": "Ryan Daubert",
+    "operationsManager": "Erik Rodela",
+    "phone": "(206) 222-4926",
+    "extension": "9542",
+    "email": "seattle@allmysons.com",
+    "lat": 47.449808,
+    "lon": -122.281159,
+    "timezone": "Pacific",
+    "address": "565 Andover Park W #100, Tukwila, WA, 98188"
+  },
+  {
+    "name": "Seattle Micro",
+    "city": "Woodinville",
+    "state": "WA",
+    "street": "13624 NE 177th Place",
+    "zip": "98201",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Erik Rodela",
+    "phone": "",
+    "extension": "9542",
+    "email": "seattle@allmysons.com",
+    "lat": 47.988431,
+    "lon": -122.200571,
+    "timezone": "Pacific",
+    "address": "13624 NE 177th Place, Woodinville, WA, 98201"
+  },
+  {
+    "name": "St. Louis",
+    "city": "Bridgeton",
+    "state": "MO",
+    "street": "3594 N. Lindbergh Blvd.",
+    "zip": "63074",
+    "rvp": "Zach O'Brien",
+    "operationsManager": "Anthony Guess",
+    "phone": "(314) 298-3800",
+    "extension": "6639",
+    "email": "stlouis@allmysons.com",
+    "lat": 38.725928,
+    "lon": -90.386418,
+    "timezone": "Central",
+    "address": "3594 N. Lindbergh Blvd., Bridgeton, MO, 63074"
+  },
+  {
+    "name": "Summerville Micro",
+    "city": "Summerville",
+    "state": "SC",
+    "street": "4400 Ladson Rd.",
+    "zip": "29485",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Tremaine Grate",
+    "phone": "",
+    "extension": "6662",
+    "email": "charleston@allmysons.com",
+    "lat": 32.975556,
+    "lon": -80.183082,
+    "timezone": "Eastern",
+    "address": "4400 Ladson Rd., Summerville, SC, 29485"
+  },
+  {
+    "name": "Tampa",
+    "city": "Tampa",
+    "state": "FL",
+    "street": "4410 W. Crest Ave, Suite A.",
+    "zip": "33614",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "Matthew Roberts",
+    "phone": "(813) 437-3417",
+    "extension": "9529",
+    "email": "tampa2@allmysons.com",
+    "lat": 28.00914,
+    "lon": -82.503393,
+    "timezone": "Eastern",
+    "address": "4410 W. Crest Ave, Suite A., Tampa, FL, 33614"
+  },
+  {
+    "name": "Tucson",
+    "city": "Tucson",
+    "state": "AZ",
+    "street": "5131 E Canada Street",
+    "zip": "85706",
+    "rvp": "Will Grotendorst",
+    "operationsManager": "John Springetti",
+    "phone": "(520) 903-0626",
+    "extension": "6611",
+    "email": "tucson@allmysons.com",
+    "lat": 32.139172,
+    "lon": -110.945127,
+    "timezone": "Mountain",
+    "address": "5131 E Canada Street, Tucson, AZ, 85706"
+  },
+  {
+    "name": "Tulsa",
+    "city": "Tulsa",
+    "state": "OK",
+    "street": "1871 N 106th E Avenue",
+    "zip": "74116",
+    "rvp": "Tristan Henderson",
+    "operationsManager": "Antwone Moore",
+    "phone": "(918) 621-1102",
+    "extension": "6614",
+    "email": "tulsa@allmysons.com",
+    "lat": 36.174994,
+    "lon": -95.847695,
+    "timezone": "Central",
+    "address": "1871 N 106th E Avenue, Tulsa, OK, 74116"
+  },
+  {
+    "name": "Tuscaloosa",
+    "city": "Tuscaloosa",
+    "state": "AL",
+    "street": "2541 Kaulton Rd",
+    "zip": "35401",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Allease Ellis",
+    "phone": "",
+    "extension": "6651",
+    "email": "birmingham@allmysons.com",
+    "lat": 33.196891,
+    "lon": -87.562666,
+    "timezone": "Central",
+    "address": "2541 Kaulton Rd, Tuscaloosa, AL, 35401"
+  },
+  {
+    "name": "Virginia Beach",
+    "city": "Norfolk",
+    "state": "VA",
+    "street": "1164 Kingwood Ave",
+    "zip": "23502",
+    "rvp": "Jeremy Andrews",
+    "operationsManager": "Charmers Redd",
+    "phone": "(804) 409-0814",
+    "extension": "9530",
+    "email": "virginiabeach@allmysons.com",
+    "lat": 36.854648,
+    "lon": -76.214253,
+    "timezone": "Eastern",
+    "address": "1164 Kingwood Ave, Norfolk, VA, 23502"
+  },
+  {
+    "name": "Virginia North",
+    "city": "Springfield",
+    "state": "VA",
+    "street": "7642 Dynatech Court",
+    "zip": "22153",
+    "rvp": "Jeremy Andrews",
+    "operationsManager": "Jason Cruz",
+    "phone": "(804) 455-7387",
+    "extension": "9523",
+    "email": "virginianorth@allmysons.com",
+    "lat": 38.744859,
+    "lon": -77.237026,
+    "timezone": "Eastern",
+    "address": "7642 Dynatech Court, Springfield, VA, 22153"
+  },
+  {
+    "name": "Waco",
+    "city": "Waco",
+    "state": "TX",
+    "street": "1900 S Loop 340",
+    "zip": "76706",
+    "rvp": "Micro Leaders",
+    "operationsManager": "Sami Alafandi",
+    "phone": "",
+    "extension": "6541",
+    "email": "dallas@allmysons.com",
+    "lat": 31.517086,
+    "lon": -97.119752,
+    "timezone": "Central",
+    "address": "1900 S Loop 340, Waco, TX, 76706"
+  },
+  {
+    "name": "Atlanta South",
+    "city": "Atlanta",
+    "state": "GA",
+    "street": "2960 Olympic Industrial",
+    "zip": "30339",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 33.87125,
+    "lon": -84.462879,
+    "timezone": "Eastern",
+    "address": "2960 Olympic Industrial, Atlanta, GA, 30339"
+  },
+  {
+    "name": "Kansas City South",
+    "city": "Olathe",
+    "state": "KS",
+    "street": "15300 S Keeler St.",
+    "zip": "66062",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 38.873287,
+    "lon": -94.775168,
+    "timezone": "Central",
+    "address": "15300 S Keeler St., Olathe, KS, 66062"
+  },
+  {
+    "name": "Philedelphia",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "street": "606 Liberty Ave. 3rd Floor",
+    "zip": "15222",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 40.442111,
+    "lon": -80.000556,
+    "timezone": "Eastern",
+    "address": "606 Liberty Ave. 3rd Floor, Pittsburgh, PA, 15222"
+  },
+  {
+    "name": "Phoenix Satellite",
+    "city": "Tempe",
+    "state": "AZ",
+    "street": "1115 W. Alameda Dr., Building B.",
+    "zip": "85282",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 33.391669,
+    "lon": -111.924896,
+    "timezone": "Mountain",
+    "address": "1115 W. Alameda Dr., Building B., Tempe, AZ, 85282"
+  },
+  {
+    "name": "Salt Lake City 2",
+    "city": "Ogden",
+    "state": "UT",
+    "street": "2987 Commerce Way",
+    "zip": "84401",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 41.22148,
+    "lon": -111.962121,
+    "timezone": "Mountain",
+    "address": "2987 Commerce Way, Ogden, UT, 84401"
+  },
+  {
+    "name": "Littleton",
+    "city": "Englewood",
+    "state": "CO",
+    "street": "2190 West Dartmouth Ave",
+    "zip": "80110",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 39.646027,
+    "lon": -104.990022,
+    "timezone": "Mountain",
+    "address": "2190 West Dartmouth Ave, Englewood, CO, 80110"
+  },
+  {
+    "name": "Katy - Houston",
+    "city": "Houston",
+    "state": "TX",
+    "street": "19416 Park Row. Ste 160",
+    "zip": "77084",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 29.844022,
+    "lon": -95.662329,
+    "timezone": "Central",
+    "address": "19416 Park Row. Ste 160, Houston, TX, 77084"
+  },
+  {
+    "name": "Chicago",
+    "city": "Chicago",
+    "state": "IL",
+    "street": "2129 West Hubbard Street",
+    "zip": "60612",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 41.880483,
+    "lon": -87.687333,
+    "timezone": "Central",
+    "address": "2129 West Hubbard Street, Chicago, IL, 60612"
+  },
+  {
+    "name": "Boston Micro",
+    "city": "Boston",
+    "state": "MA",
+    "street": "33 Traveler St.",
+    "zip": "02118",
+    "rvp": "",
+    "operationsManager": "",
+    "phone": "",
+    "extension": "",
+    "email": "",
+    "lat": 42.340154,
+    "lon": -71.075627,
+    "timezone": "Eastern",
+    "address": "33 Traveler St., Boston, MA, 02118"
+  }
+];
+
+const AMS_LOCATIONS = Object.fromEntries(
+  AMS_LOCATIONS_ARRAY.map(loc => {
+    const searchParts = [loc.name, loc.city, loc.state, loc.address, loc.rvp, loc.operationsManager, loc.phone, loc.extension, loc.email]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return [loc.name, { ...loc, searchText: searchParts, geoSource: (Number.isFinite(loc.lat) && Number.isFinite(loc.lon)) ? 'Embedded city point' : 'Waiting on city geocode' }];
+  })
+);
+
+const AMS_GEOCODE_CACHE_KEY = 'ams_city_geocode_cache_v2';
+let amsGeocodeCache = loadAmsGeocodeCache();
+
+AMS_LOCATIONS_ARRAY.forEach(loc => {
+  const cityKey = getAmsCityKey(loc);
+  const cached = amsGeocodeCache[cityKey];
+  if (cached && Number.isFinite(cached.lat) && Number.isFinite(cached.lon)) {
+    loc.lat = cached.lat;
+    loc.lon = cached.lon;
+    loc.matchedAddress = cached.matchedAddress || cityKey;
+    loc.geoSource = 'Cached city geocode';
+  } else if (Number.isFinite(loc.lat) && Number.isFinite(loc.lon)) {
+    loc.geoSource = 'Embedded city point';
+  } else {
+    loc.geoSource = 'Waiting on city geocode';
+  }
+  if (AMS_LOCATIONS[loc.name]) {
+    AMS_LOCATIONS[loc.name].lat = loc.lat;
+    AMS_LOCATIONS[loc.name].lon = loc.lon;
+    AMS_LOCATIONS[loc.name].matchedAddress = loc.matchedAddress || AMS_LOCATIONS[loc.name].matchedAddress;
+    AMS_LOCATIONS[loc.name].geoSource = loc.geoSource || AMS_LOCATIONS[loc.name].geoSource;
+  }
+});
+
+let selectedAmsLocation = null;
+let amsCurrentWikiToken = null;
 let selectedOffice = null;
+let amsTimezoneFilter = 'all';
+let amsMapInitialized = false;
+let amsProjection = null;
+let amsSvg = null;
+let amsMapMarkerSelection = null;
+let amsZoomLayer = null;
+let amsZoomBehavior = null;
+let amsGeocodeStarted = false;
+
+const AMS_STATE_TZ = {
+  "01":"Central","04":"Mountain","05":"Central","06":"Pacific","08":"Mountain","09":"Eastern","10":"Eastern","11":"Eastern","12":"Eastern",
+  "13":"Eastern","16":"Mountain","17":"Central","18":"Eastern","19":"Central","20":"Central","21":"Eastern","22":"Central","23":"Eastern",
+  "24":"Eastern","25":"Eastern","26":"Eastern","27":"Central","28":"Central","29":"Central","30":"Mountain","31":"Central","32":"Pacific","33":"Eastern",
+  "34":"Eastern","35":"Mountain","36":"Eastern","37":"Eastern","38":"Central","39":"Eastern","40":"Central","41":"Pacific","42":"Eastern",
+  "44":"Eastern","45":"Eastern","46":"Central","47":"Central","48":"Central","49":"Mountain","50":"Eastern","51":"Eastern","53":"Pacific",
+  "54":"Eastern","55":"Central","56":"Mountain"
+};
+
+
+const AMS_STATE_LABELS = {
+  "01": { name:"Alabama", abbr:"AL" }, "04": { name:"Arizona", abbr:"AZ" }, "05": { name:"Arkansas", abbr:"AR" },
+  "06": { name:"California", abbr:"CA" }, "08": { name:"Colorado", abbr:"CO" }, "09": { name:"Connecticut", abbr:"CT" },
+  "10": { name:"Delaware", abbr:"DE" }, "11": { name:"District of Columbia", abbr:"DC" }, "12": { name:"Florida", abbr:"FL" },
+  "13": { name:"Georgia", abbr:"GA" }, "16": { name:"Idaho", abbr:"ID" }, "17": { name:"Illinois", abbr:"IL" },
+  "18": { name:"Indiana", abbr:"IN" }, "19": { name:"Iowa", abbr:"IA" }, "20": { name:"Kansas", abbr:"KS" },
+  "21": { name:"Kentucky", abbr:"KY" }, "22": { name:"Louisiana", abbr:"LA" }, "23": { name:"Maine", abbr:"ME" },
+  "24": { name:"Maryland", abbr:"MD" }, "25": { name:"Massachusetts", abbr:"MA" }, "26": { name:"Michigan", abbr:"MI" },
+  "27": { name:"Minnesota", abbr:"MN" }, "28": { name:"Mississippi", abbr:"MS" }, "29": { name:"Missouri", abbr:"MO" },
+  "30": { name:"Montana", abbr:"MT" }, "31": { name:"Nebraska", abbr:"NE" }, "32": { name:"Nevada", abbr:"NV" },
+  "33": { name:"New Hampshire", abbr:"NH" }, "34": { name:"New Jersey", abbr:"NJ" }, "35": { name:"New Mexico", abbr:"NM" },
+  "36": { name:"New York", abbr:"NY" }, "37": { name:"North Carolina", abbr:"NC" }, "38": { name:"North Dakota", abbr:"ND" },
+  "39": { name:"Ohio", abbr:"OH" }, "40": { name:"Oklahoma", abbr:"OK" }, "41": { name:"Oregon", abbr:"OR" },
+  "42": { name:"Pennsylvania", abbr:"PA" }, "44": { name:"Rhode Island", abbr:"RI" }, "45": { name:"South Carolina", abbr:"SC" },
+  "46": { name:"South Dakota", abbr:"SD" }, "47": { name:"Tennessee", abbr:"TN" }, "48": { name:"Texas", abbr:"TX" },
+  "49": { name:"Utah", abbr:"UT" }, "50": { name:"Vermont", abbr:"VT" }, "51": { name:"Virginia", abbr:"VA" },
+  "53": { name:"Washington", abbr:"WA" }, "54": { name:"West Virginia", abbr:"WV" }, "55": { name:"Wisconsin", abbr:"WI" },
+  "56": { name:"Wyoming", abbr:"WY" }
+};
+
+function getAmsCityKey(loc) {
+  return [loc.city, loc.state].filter(Boolean).join(', ').replace(/\s+/g,' ').trim();
+}
+
+const AMS_STATE_SPLITS = {
+  "12": { base:'Eastern', slices:[{ side:'west', fraction:0.28, timezone:'Central' }] },
+  "18": { base:'Eastern', slices:[{ side:'west', fraction:0.18, timezone:'Central' }] },
+  "21": { base:'Eastern', slices:[{ side:'west', fraction:0.42, timezone:'Central' }] },
+  "26": { base:'Eastern', slices:[{ side:'west', fraction:0.12, timezone:'Central' }] },
+  "31": { base:'Central', slices:[{ side:'west', fraction:0.22, timezone:'Mountain' }] },
+  "38": { base:'Central', slices:[{ side:'west', fraction:0.28, timezone:'Mountain' }] },
+  "46": { base:'Central', slices:[{ side:'west', fraction:0.30, timezone:'Mountain' }] },
+  "47": { base:'Central', slices:[{ side:'east', fraction:0.34, timezone:'Eastern' }] },
+  "48": { base:'Central', slices:[{ side:'west', fraction:0.16, timezone:'Mountain' }] }
+};
+
+function loadAmsGeocodeCache() {
+  try {
+    const raw = localStorage.getItem(AMS_GEOCODE_CACHE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (err) {
+    console.warn('Could not read AMS geocode cache', err);
+    return {};
+  }
+}
+
+function saveAmsGeocodeCache() {
+  try {
+    localStorage.setItem(AMS_GEOCODE_CACHE_KEY, JSON.stringify(amsGeocodeCache));
+  } catch (err) {
+    console.warn('Could not save AMS geocode cache', err);
+  }
+}
+
+function updateAmsCounts() {
+  const counts = { Pacific:0, Mountain:0, Central:0, Eastern:0 };
+  AMS_LOCATIONS_ARRAY.forEach(loc => { if (counts[loc.timezone] !== undefined) counts[loc.timezone]++; });
+  ['Pacific','Mountain','Central','Eastern'].forEach(tz => {
+    const el = document.getElementById('amsCount' + tz);
+    if (el) el.textContent = counts[tz];
+  });
+}
+
+function buildAmsLocationButtons() {
+  const grid = document.getElementById('amsLocationsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  AMS_LOCATIONS_ARRAY.slice().sort((a,b) => a.name.localeCompare(b.name)).forEach(data => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ams-loc-btn';
+    btn.dataset.location = data.name;
+    btn.dataset.timezone = data.timezone;
+    btn.dataset.search = (AMS_LOCATIONS[data.name]?.searchText || '').toLowerCase();
+    btn.innerHTML = `${data.name}<small>${[data.city, data.state].filter(Boolean).join(', ')} • ${data.timezone}</small>`;
+    btn.onclick = function(){ selectAmsLocation(data.name); };
+    grid.appendChild(btn);
+  });
+}
+
+function setAmsGeoStatus(message, show=true) {
+  const el = document.getElementById('amsGeoStatus');
+  if (!el) return;
+  el.textContent = message || '';
+  el.classList.toggle('hidden', !show || !message);
+}
+
+
+const AMS_STATE_FULL = {
+  AL:'Alabama', AZ:'Arizona', AR:'Arkansas', CA:'California', CO:'Colorado', CT:'Connecticut', DC:'District of Columbia', DE:'Delaware', FL:'Florida',
+  GA:'Georgia', IA:'Iowa', ID:'Idaho', IL:'Illinois', IN:'Indiana', KS:'Kansas', KY:'Kentucky', LA:'Louisiana', MA:'Massachusetts', MD:'Maryland',
+  MI:'Michigan', MN:'Minnesota', MO:'Missouri', MS:'Mississippi', NC:'North Carolina', NE:'Nebraska', NH:'New Hampshire', NJ:'New Jersey', NM:'New Mexico',
+  NV:'Nevada', NY:'New York', OH:'Ohio', OK:'Oklahoma', OR:'Oregon', PA:'Pennsylvania', RI:'Rhode Island', SC:'South Carolina', TN:'Tennessee', TX:'Texas',
+  UT:'Utah', VA:'Virginia', WA:'Washington', WI:'Wisconsin'
+};
+
+const AMS_MARKET_SPORTS = {
+  'Akron|OH':['Cleveland Browns (NFL)','Cleveland Guardians (MLB)','Cleveland Cavaliers (NBA)'],
+  'Austin|TX':['Austin FC (MLS)','San Antonio Spurs (NBA)'],
+  'Atlanta|GA':['Atlanta Falcons (NFL)','Atlanta Braves (MLB)','Atlanta Hawks (NBA)','Atlanta United FC (MLS)'],
+  'Baltimore|MD':['Baltimore Ravens (NFL)','Baltimore Orioles (MLB)'],
+  'Birmingham|AL':['Birmingham Stallions (UFL)'],
+  'Boise|ID':['No major-league team in Boise; Denver and Salt Lake clubs are the most common nearby pro reference points'],
+  'Boston|MA':['Boston Red Sox (MLB)','Boston Celtics (NBA)','Boston Bruins (NHL)','New England Patriots (NFL)','New England Revolution (MLS)'],
+  'Boulder|CO':['Denver Broncos (NFL)','Colorado Rockies (MLB)','Denver Nuggets (NBA)','Colorado Avalanche (NHL)','Colorado Rapids (MLS)'],
+  'Charleston|SC':['South Carolina has no major-league franchise; Atlanta teams are the usual nearby pro reference point'],
+  'Charlotte|NC':['Carolina Panthers (NFL)','Charlotte Hornets (NBA)','Charlotte FC (MLS)'],
+  'Chicago|IL':['Bears (NFL)','Cubs (MLB)','White Sox (MLB)','Bulls (NBA)','Blackhawks (NHL)','Fire FC (MLS)'],
+  'Cincinnati|OH':['Cincinnati Bengals (NFL)','Cincinnati Reds (MLB)','FC Cincinnati (MLS)'],
+  'Cleveland|OH':['Cleveland Browns (NFL)','Cleveland Guardians (MLB)','Cleveland Cavaliers (NBA)'],
+  'Columbus|OH':['Columbus Blue Jackets (NHL)','Columbus Crew (MLS)'],
+  'Dallas|TX':['Dallas Cowboys (NFL)','Texas Rangers (MLB)','Dallas Mavericks (NBA)','Dallas Stars (NHL)','FC Dallas (MLS)'],
+  'Denver|CO':['Denver Broncos (NFL)','Colorado Rockies (MLB)','Denver Nuggets (NBA)','Colorado Avalanche (NHL)','Colorado Rapids (MLS)'],
+  'Detroit|MI':['Lions (NFL)','Tigers (MLB)','Pistons (NBA)','Red Wings (NHL)'],
+  'Hartford|CT':['Connecticut has no major-league franchise; Boston and New York teams are the most common nearby pro reference points'],
+  'Houston|TX':['Houston Texans (NFL)','Houston Astros (MLB)','Houston Rockets (NBA)','Houston Dynamo FC (MLS)'],
+  'Indianapolis|IN':['Indianapolis Colts (NFL)','Indiana Pacers (NBA)'],
+  'Jacksonville|FL':['Jacksonville Jaguars (NFL)'],
+  'Kansas City|MO':['Kansas City Chiefs (NFL)','Kansas City Royals (MLB)','Sporting Kansas City (MLS)'],
+  'Las Vegas|NV':['Las Vegas Raiders (NFL)','Vegas Golden Knights (NHL)','Las Vegas Aces (WNBA)'],
+  'Louisville|KY':['Louisville City FC (USL)','Racing Louisville FC (NWSL); nearby major-league references are usually Cincinnati or Nashville'],
+  'Memphis|TN':['Memphis Grizzlies (NBA)'],
+  'Miami|FL':['Miami Dolphins (NFL)','Miami Marlins (MLB)','Miami Heat (NBA)','Florida Panthers (NHL)','Inter Miami CF (MLS)'],
+  'Milwaukee|WI':['Milwaukee Brewers (MLB)','Milwaukee Bucks (NBA)'],
+  'Nashville|TN':['Tennessee Titans (NFL)','Nashville Predators (NHL)','Nashville SC (MLS)'],
+  'New Orleans|LA':['New Orleans Saints (NFL)','New Orleans Pelicans (NBA)'],
+  'Oklahoma City|OK':['Oklahoma City Thunder (NBA)'],
+  'Orlando|FL':['Orlando Magic (NBA)','Orlando City SC (MLS)'],
+  'Philadelphia|PA':['Eagles (NFL)','Phillies (MLB)','76ers (NBA)','Flyers (NHL)','Union (MLS)'],
+  'Phoenix|AZ':['Arizona Cardinals (NFL)','Arizona Diamondbacks (MLB)','Phoenix Suns (NBA)','Arizona Coyotes history / regional hockey interest','Phoenix Rising FC (USL)'],
+  'Pittsburgh|PA':['Steelers (NFL)','Pirates (MLB)','Penguins (NHL)'],
+  'Portland|OR':['Portland Trail Blazers (NBA)','Portland Timbers (MLS)','Portland Thorns FC (NWSL)'],
+  'Raleigh|NC':['Carolina Hurricanes (NHL)','NC Courage (NWSL); Panthers and Hornets are the most common nearby big-league references'],
+  'Richmond|VA':['Virginia has no major-league franchise; Washington, D.C. teams are the most common nearby pro reference point'],
+  'Salt Lake City|UT':['Utah Jazz (NBA)','Real Salt Lake (MLS)','Utah Hockey Club / NHL in Salt Lake City'],
+  'San Antonio|TX':['San Antonio Spurs (NBA)'],
+  'Seattle|WA':['Seattle Seahawks (NFL)','Seattle Mariners (MLB)','Seattle Kraken (NHL)','Seattle Sounders FC (MLS)'],
+  'St. Louis|MO':['St. Louis Cardinals (MLB)','St. Louis Blues (NHL)','St. Louis City SC (MLS)'],
+  'Tampa|FL':['Tampa Bay Buccaneers (NFL)','Tampa Bay Rays (MLB)','Tampa Bay Lightning (NHL)','Tampa Bay Sun FC (USL Super League)'],
+  'Tulsa|OK':['No major-league team in Tulsa; Oklahoma City and Dallas teams are the most common nearby pro reference points'],
+  'Virginia Beach|VA':['Virginia has no major-league franchise; Washington, D.C. teams are the most common nearby pro reference point']
+};
+
+const AMS_STATE_SPORTS = {
+  AL:['Alabama has no major-league franchise; Atlanta and Nashville teams are the most common nearby pro references'],
+  AZ:['Arizona Cardinals (NFL)','Arizona Diamondbacks (MLB)','Phoenix Suns (NBA)'],
+  CO:['Denver Broncos (NFL)','Colorado Rockies (MLB)','Denver Nuggets (NBA)','Colorado Avalanche (NHL)'],
+  CT:['Connecticut has no major-league franchise; Boston and New York teams are the most common nearby pro references'],
+  FL:['Dolphins (NFL)','Jaguars (NFL)','Buccaneers (NFL)','Marlins (MLB)','Rays (MLB)','Heat (NBA)','Magic (NBA)','Panthers (NHL)','Inter Miami CF (MLS)','Orlando City SC (MLS)'],
+  GA:['Atlanta Falcons (NFL)','Atlanta Braves (MLB)','Atlanta Hawks (NBA)','Atlanta United FC (MLS)'],
+  IA:['Iowa has no major-league franchise; Chicago, Minneapolis, and Kansas City teams are the most common nearby pro references'],
+  ID:['Idaho has no major-league franchise; Salt Lake City and Denver teams are the most common nearby pro references'],
+  IL:['Bears (NFL)','Cubs (MLB)','White Sox (MLB)','Bulls (NBA)','Blackhawks (NHL)'],
+  IN:['Indianapolis Colts (NFL)','Indiana Pacers (NBA)'],
+  KS:['Kansas City Chiefs (NFL)','Kansas City Royals (MLB)','Sporting Kansas City (MLS)'],
+  KY:['Kentucky has no major-league franchise; Cincinnati, Nashville, and Indianapolis teams are the most common nearby pro references'],
+  LA:['New Orleans Saints (NFL)','New Orleans Pelicans (NBA)'],
+  MA:['Boston Red Sox (MLB)','Boston Celtics (NBA)','Boston Bruins (NHL)','New England Patriots (NFL)'],
+  MD:['Baltimore Ravens (NFL)','Baltimore Orioles (MLB)','Washington Commanders (NFL)','Washington Nationals (MLB)'],
+  MI:['Lions (NFL)','Tigers (MLB)','Pistons (NBA)','Red Wings (NHL)'],
+  MO:['Chiefs (NFL)','Royals (MLB)','Cardinals (MLB)','Blues (NHL)','St. Louis City SC (MLS)'],
+  MS:['Mississippi has no major-league franchise; New Orleans, Memphis, and Atlanta teams are the most common nearby pro references'],
+  NC:['Carolina Panthers (NFL)','Charlotte Hornets (NBA)','Charlotte FC (MLS)','Carolina Hurricanes (NHL)'],
+  NE:['Nebraska has no major-league franchise; Kansas City teams are the most common nearby pro references'],
+  NH:['New Hampshire has no major-league franchise; Boston teams are the most common nearby pro references'],
+  NJ:['Giants (NFL)','Jets (NFL)','Yankees (MLB)','Mets (MLB)','Nets (NBA)','Devils (NHL)'],
+  NM:['New Mexico has no major-league franchise; Denver and Phoenix teams are the most common nearby pro references'],
+  NV:['Las Vegas Raiders (NFL)','Vegas Golden Knights (NHL)','Las Vegas Aces (WNBA)'],
+  OH:['Browns (NFL)','Bengals (NFL)','Guardians (MLB)','Reds (MLB)','Cavaliers (NBA)','Blue Jackets (NHL)'],
+  OK:['Oklahoma City Thunder (NBA)'],
+  OR:['Portland Trail Blazers (NBA)','Portland Timbers (MLS)','Portland Thorns FC (NWSL)'],
+  PA:['Eagles (NFL)','Steelers (NFL)','Phillies (MLB)','Pirates (MLB)','76ers (NBA)','Flyers (NHL)','Penguins (NHL)'],
+  RI:['Rhode Island has no major-league franchise; Boston teams are the most common nearby pro references'],
+  SC:['South Carolina has no major-league franchise; Charlotte and Atlanta teams are the most common nearby pro references'],
+  TN:['Titans (NFL)','Predators (NHL)','Nashville SC (MLS)','Grizzlies (NBA)'],
+  TX:['Cowboys (NFL)','Rangers (MLB)','Mavericks (NBA)','Spurs (NBA)','Stars (NHL)','FC Dallas (MLS)','Austin FC (MLS)'],
+  UT:['Utah Jazz (NBA)','Real Salt Lake (MLS)','Utah Hockey Club / NHL in Salt Lake City'],
+  VA:['Virginia has no major-league franchise; Washington, D.C. teams are the most common nearby pro references'],
+  WA:['Seattle Seahawks (NFL)','Seattle Mariners (MLB)','Seattle Kraken (NHL)','Seattle Sounders FC (MLS)'],
+  WI:['Milwaukee Brewers (MLB)','Milwaukee Bucks (NBA)','Green Bay Packers (NFL)']
+};
+
+const AMS_MARKET_COLLEGE_SPORTS = {
+  'Boise|ID':['Boise State Broncos (football)','Boise State Broncos (basketball)'],
+  'Charleston|SC':['South Carolina Gamecocks','Clemson Tigers','College of Charleston Cougars','The Citadel Bulldogs'],
+  'Hartford|CT':['UConn Huskies (football)','UConn Huskies (basketball)'],
+  'Richmond|VA':['Virginia Tech Hokies','Virginia Cavaliers','Old Dominion Monarchs','VCU Rams','Richmond Spiders'],
+  'Tulsa|OK':['Tulsa Golden Hurricane','Oklahoma Sooners','Oklahoma State Cowboys'],
+  'Virginia Beach|VA':['Old Dominion Monarchs','Virginia Tech Hokies','Virginia Cavaliers','East Carolina Pirates'],
+  'Providence|RI':['Providence Friars','Rhode Island Rams'],
+  'Burlington|VT':['Vermont Catamounts'],
+  'Manchester|NH':['New Hampshire Wildcats']
+};
+
+const AMS_STATE_COLLEGE_SPORTS = {
+  AL:['Alabama Crimson Tide','Auburn Tigers','UAB Blazers'],
+  CT:['UConn Huskies (football)','UConn Huskies (basketball)'],
+  ID:['Boise State Broncos'],
+  KY:['Kentucky Wildcats','Louisville Cardinals'],
+  MS:['Ole Miss Rebels','Mississippi State Bulldogs','Southern Miss Golden Eagles'],
+  NH:['New Hampshire Wildcats'],
+  RI:['Providence Friars','Rhode Island Rams'],
+  SC:['South Carolina Gamecocks','Clemson Tigers','Coastal Carolina Chanticleers'],
+  VA:['Virginia Tech Hokies','Virginia Cavaliers','Old Dominion Monarchs','James Madison Dukes'],
+  VT:['Vermont Catamounts']
+};
+
+function amsLooksLikeNoProSports(list) {
+  const joined = (list || []).join(' ').toLowerCase();
+  return !list || !list.length || joined.includes('no major-league') || joined.includes('has no major-league franchise');
+}
+
+const AMS_WIKI_CACHE = Object.create(null);
+
+const AMS_CITY_IMAGE_OVERRIDES = {
+  'Little Rock|AR': {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Little%20Rock%20skyline%2C%20July%202024.jpg',
+    caption: 'Little Rock skyline'
+  },
+  'Des Moines|IA': {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/DesMoinesIowaSkyline.jpg',
+    caption: 'Des Moines skyline'
+  },
+  'Baton Rouge|LA': {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Baton%20Rouge%20skyline%202013%20cropped-2.jpg',
+    caption: 'Baton Rouge skyline'
+  }
+};
+
+
+function amsSafeText(value) {
+  return String(value || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch] || ch));
+}
+
+function amsUnique(list) {
+  return [...new Set((list || []).map(v => String(v || '').trim()).filter(Boolean))];
+}
+
+function amsDisplayMarket(data) {
+  const raw = String((data && data.name) || '').trim();
+  let base = raw.replace(/\s+Micro$/i,'').replace(/\s+\d+$/,'').replace(/\s+Satellite$/i,'').trim();
+  base = base.replace(/\bNorth\b|\bSouth\b|\bEast\b|\bWest\b/gi,' ').replace(/\s+/g,' ').trim();
+  const aliases = {
+    'Fredricksburgh':'Fredericksburg',
+    'Philedelphia':'Philadelphia',
+    'New City Moving':'Chicago',
+    'Kansas City-Micro':'Kansas City',
+    'Katy (1)':'Houston',
+    'Katy - Houston':'Houston',
+    'Maryland':'Baltimore',
+    'Connecticut':'Hartford',
+    'Rhode Island':'Providence',
+    'Virginia':'Richmond',
+    'Dallas Downtown':'Dallas',
+    'Highland Park':'Dallas',
+    'Phoenix Satellite':'Phoenix'
+  };
+  return aliases[base] || base || data.city || 'Selected City';
+}
+
+function amsWikiCandidates(data) {
+  const stateFull = AMS_STATE_FULL[data.state] || data.state || '';
+  const market = amsDisplayMarket(data);
+  const city = data.city || market;
+  return amsUnique([
+    `${market}, ${stateFull}`,
+    `${city}, ${stateFull}`,
+    market,
+    city
+  ]);
+}
+
+
+function amsCityImageOverride(data) {
+  const market = amsDisplayMarket(data);
+  return AMS_CITY_IMAGE_OVERRIDES[`${market}|${data.state || ''}`] || AMS_CITY_IMAGE_OVERRIDES[`${data.city || market}|${data.state || ''}`] || null;
+}
+
+function amsSportsText(data) {
+  const market = amsDisplayMarket(data);
+  const state = data.state || '';
+  const key = `${market}|${state}`;
+  const proTeams = AMS_MARKET_SPORTS[key] || AMS_STATE_SPORTS[state] || [];
+  if (amsLooksLikeNoProSports(proTeams)) {
+    const collegeTeams = AMS_MARKET_COLLEGE_SPORTS[key] || AMS_STATE_COLLEGE_SPORTS[state] || [];
+    if (collegeTeams.length) {
+      return `College teams: ${collegeTeams.join(' • ')}`;
+    }
+  }
+  return (proTeams.length ? proTeams : ['No nearby team data loaded']).join(' • ');
+}
+
+function amsHousingNotes(data) {
+  const state = data.state || '';
+  const market = amsDisplayMarket(data);
+  const east = ['CT','MA','MD','NJ','PA','RI','VA','DC','NH'];
+  const southeast = ['AL','FL','GA','LA','MS','NC','SC','TN'];
+  const mountain = ['AZ','CO','ID','NM','NV','UT'];
+  const west = ['CA','OR','WA'];
+  const midwest = ['IA','IL','IN','KS','MI','MO','NE','OH','OK','WI'];
+  if (state === 'TX') return [
+    'Texas moves are often slab-foundation homes and newer subdivisions, so ask about long driveways, walk-up distance, and gated-community access codes.',
+    'Big sectionals, oversized fridges, and king sets are common; ask about tight turns, second-floor game rooms, and garage storage before truck day.',
+    `${market} jobs can also involve HOA parking rules or narrow cul-de-sacs, so confirm truck parking and whether a shuttle carry might be needed.`
+  ];
+  if (east.includes(state)) return [
+    'Older housing stock is common, so ask about narrow stairwells, steep entries, attic access, and basement or bulkhead exits.',
+    'Historic districts and tight city streets can create parking and permit issues, so confirm truck access, loading zones, and any elevator reservations.',
+    'Townhomes and rowhouses often mean multiple flights and limited staging space, so ask about front steps, alleys, and long carries from legal parking.'
+  ];
+  if (southeast.includes(state)) return [
+    'Crawl spaces, humid garages, and soft or sandy yards come up a lot, so ask where items are stored and whether rain could affect the load path.',
+    'Many neighborhoods are gated or HOA-controlled, so confirm gate codes, visitor entry rules, and whether the truck can stay close to the home.',
+    'Coastal and hurricane-prone markets often have elevated entries, lanais, or outdoor storage, so ask about stairs, porches, and weather-sensitive staging.'
+  ];
+  if (mountain.includes(state)) return [
+    'Mountain-region jobs can involve steep grades, switchbacks, and weather swings, so confirm truck route, driveway slope, and seasonal access issues.',
+    'Split-level homes, walkout basements, and garage-level entries are common, so ask where the heavy pieces actually start and finish.',
+    'At elevation, long drives and tight turns matter more; confirm whether large straight trucks, trailers, or shuttles will fit the property.'
+  ];
+  if (west.includes(state)) return [
+    'West Coast jobs often mean hills, narrow urban streets, or tight suburban parking, so confirm truck placement before move day.',
+    'Ask about apartment elevators, loading docks, reserved time windows, and no-parking enforcement in dense neighborhoods.',
+    'In some markets, multilevel homes and tucked-away garages create long carries or stair-heavy paths, so check driveway grade and entry access early.'
+  ];
+  if (midwest.includes(state)) return [
+    'Basements, detached garages, and alley access are common in this region, so ask exactly where items are stored and where the truck can stage.',
+    'Many homes have a main floor plus basement or finished lower level, so confirm stairs, appliance paths, and whether there is exterior access.',
+    'Weather can change the carry path fast, so ask about snow, ice, mud, or wet grass if the move is during colder months.'
+  ];
+  return [
+    'Ask where the heavy pieces start and finish, not just the street address; that usually catches stairs, long carries, and detached storage early.',
+    'Confirm driveway fit, truck parking, and whether there are gates, elevators, or loading restrictions before move day.',
+    'For larger homes, ask about attics, basements, bonus rooms, and garage storage so the crew gets a cleaner labor picture.'
+  ];
+}
+
+function amsFallbackFacts(data) {
+  const market = amsDisplayMarket(data);
+  const stateFull = AMS_STATE_FULL[data.state] || data.state || 'the area';
+  return [
+    `${market} is part of the ${stateFull} market and runs on ${data.timezone || 'local'} Time.`,
+    `Branch address: ${data.address || `${data.city || market}, ${stateFull}`}.`,
+    'Use the city photo and notes as a quick talking point while confirming neighborhood access and home layout.'
+  ];
+}
+
+function amsSetList(id, items) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = (items || []).map(item => `<li>${amsSafeText(item)}</li>`).join('') || '<li>—</li>';
+}
+
+function amsSetImageState(mode, payload={}) {
+  const img = document.getElementById('amsLocationImage');
+  const status = document.getElementById('amsLocationImageStatus');
+  if (!img || !status) return;
+  if (mode === 'loading') {
+    img.removeAttribute('src');
+    img.style.display = 'none';
+    status.textContent = payload.message || 'Loading city photo…';
+    return;
+  }
+  if (mode === 'ready') {
+    img.src = payload.src || '';
+    img.alt = payload.alt || 'City view';
+    img.style.display = payload.src ? 'block' : 'none';
+    status.textContent = payload.caption || 'City photo loaded.';
+    return;
+  }
+  img.removeAttribute('src');
+  img.style.display = 'none';
+  status.textContent = payload.message || 'No city image available right now.';
+}
+
+async function amsFetchWikiSummary(title) {
+  if (!title) return null;
+  if (AMS_WIKI_CACHE[title]) return AMS_WIKI_CACHE[title];
+  try {
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data || data.type === 'disambiguation') return null;
+    AMS_WIKI_CACHE[title] = data;
+    return data;
+  } catch (err) {
+    return null;
+  }
+}
+
+async function amsLoadCityContent(data) {
+  const token = `${data.name}|${data.city}|${data.state}|${Date.now()}`;
+  amsCurrentWikiToken = token;
+  const note = document.getElementById('amsLocationWikiNote');
+  if (note) note.textContent = '';
+  amsSetImageState('loading', { message:'Loading city photo and quick facts…' });
+  document.getElementById('amsLocationSports').textContent = amsSportsText(data);
+  amsSetList('amsLocationHousing', amsHousingNotes(data));
+  let summary = null;
+  for (const title of amsWikiCandidates(data)) {
+    summary = await amsFetchWikiSummary(title);
+    if (summary && (summary.extract || summary.thumbnail || summary.originalimage)) break;
+  }
+  if (amsCurrentWikiToken !== token) return;
+  const market = amsDisplayMarket(data);
+  const overrideImage = amsCityImageOverride(data);
+  if (summary) {
+    const imgSrc = (overrideImage && overrideImage.src) || (summary.originalimage && summary.originalimage.source) || (summary.thumbnail && summary.thumbnail.source) || '';
+    if (imgSrc) {
+      amsSetImageState('ready', {
+        src: imgSrc,
+        alt: `${market} city view`,
+        caption: (overrideImage && overrideImage.caption) || `${summary.titles?.normalized || market} snapshot`
+      });
+    } else {
+      amsSetImageState('empty', { message:'City photo unavailable right now, but the local notes below are still loaded.' });
+    }
+    const sentences = String(summary.extract || '')
+      .replace(/\s+/g,' ')
+      .split(/(?<=[.!?])\s+/)
+      .map(s => s.trim())
+      .filter(Boolean)
+      .slice(0,3);
+    amsSetList('amsLocationFacts', sentences.length ? sentences : amsFallbackFacts(data));
+    if (note && summary.content_urls && summary.content_urls.desktop && summary.content_urls.desktop.page) {
+      note.textContent = `City facts pulled from ${summary.titles?.normalized || market} on Wikipedia.`;
+    }
+  } else {
+    if (overrideImage && overrideImage.src) {
+      amsSetImageState('ready', {
+        src: overrideImage.src,
+        alt: `${market} city view`,
+        caption: overrideImage.caption || `${market} skyline`
+      });
+    } else {
+      amsSetImageState('empty', { message:'City photo unavailable right now. The branch details and move notes are still below.' });
+    }
+    amsSetList('amsLocationFacts', amsFallbackFacts(data));
+  }
+}
+
+function selectAmsLocation(name) {
+  selectedAmsLocation = name;
+  const data = AMS_LOCATIONS[name] || {};
+  refreshAmsSelectionStyles();
+
+  const empty = document.getElementById('amsLocationEmpty');
+  const info = document.getElementById('amsLocationInfo');
+  if (empty) empty.style.display = 'none';
+  if (info) info.style.display = 'block';
+  document.getElementById('amsLocationName').textContent = name;
+  document.getElementById('amsLocationRegion').textContent = `${data.timezone || '—'} Time • ${data.state || 'AMS Branch'}`;
+  document.getElementById('amsLocationAddress').textContent = data.address || '—';
+  document.getElementById('amsLocationRvp').textContent = data.rvp || '—';
+  document.getElementById('amsLocationOps').textContent = data.operationsManager || '—';
+  document.getElementById('amsLocationPhone').textContent = data.phone || '—';
+  document.getElementById('amsLocationExt').textContent = data.extension || '—';
+  document.getElementById('amsLocationEmail').textContent = data.email || '—';
+  document.getElementById('amsLocationSports').textContent = 'Loading…';
+  amsSetList('amsLocationFacts', ['Loading city facts…']);
+  amsSetList('amsLocationHousing', ['Loading home and access notes…']);
+  amsLoadCityContent(data);
+
+  if (amsMapMarkerSelection) {
+    const target = AMS_LOCATIONS[name];
+    if (target && Number.isFinite(target.lon) && Number.isFinite(target.lat) && amsProjection && amsZoomBehavior && amsSvg) {
+      const pt = amsProjection([target.lon, target.lat]);
+      if (pt) {
+        amsSvg.transition().duration(350).call(
+          amsZoomBehavior.transform,
+          d3.zoomIdentity.translate(170 - pt[0] * 1.85 + 120, 85 - pt[1] * 1.85 + 60).scale(2.15)
+        );
+      }
+    }
+  }
+}
+
+function refreshAmsSelectionStyles() {
+  document.querySelectorAll('.ams-loc-btn').forEach(b => b.classList.toggle('active', b.dataset.location === selectedAmsLocation));
+  if (amsMapMarkerSelection) {
+    amsMapMarkerSelection.classed('active', d => d.name === selectedAmsLocation);
+  }
+}
+
+function updateAmsMarkerPositions() {
+  if (!amsProjection || !amsMapMarkerSelection) return;
+  amsMapMarkerSelection.each(function(d) {
+    const sel = d3.select(this);
+    if (!Number.isFinite(d.lon) || !Number.isFinite(d.lat)) {
+      sel.attr('display', 'none');
+      return;
+    }
+    const pt = amsProjection([d.lon, d.lat]);
+    if (!pt) {
+      sel.attr('display', 'none');
+      return;
+    }
+    sel.attr('display', null).attr('transform', `translate(${pt[0]},${pt[1]})`);
+  });
+}
+
+function addAmsStateSplit(defs, layer, path, feature) {
+  const fips = String(feature.id).padStart(2,'0');
+  const split = AMS_STATE_SPLITS[fips];
+  if (!split) return;
+
+  const [[x0, y0], [x1, y1]] = path.bounds(feature);
+  const clipId = `amsStateClip_${fips}`;
+  defs.append('clipPath')
+    .attr('id', clipId)
+    .append('path')
+    .datum(feature)
+    .attr('d', path);
+
+  split.slices.forEach((slice) => {
+    let rectX = x0 - 2;
+    let rectY = y0 - 3;
+    let rectWidth = (x1 - x0) + 4;
+    let rectHeight = (y1 - y0) + 6;
+    let line = null;
+
+    if (Number.isFinite(slice.xFrac) && Number.isFinite(slice.yFrac) && Number.isFinite(slice.widthFrac) && Number.isFinite(slice.heightFrac)) {
+      rectX = x0 + ((x1 - x0) * slice.xFrac) - 2;
+      rectY = y0 + ((y1 - y0) * slice.yFrac) - 3;
+      rectWidth = ((x1 - x0) * slice.widthFrac) + 4;
+      rectHeight = ((y1 - y0) * slice.heightFrac) + 6;
+    } else {
+      const width = x1 - x0;
+      const sliceWidth = width * slice.fraction;
+      rectX = slice.side === 'west' ? x0 - 2 : x1 - sliceWidth + 2;
+      rectWidth = sliceWidth + 4;
+      line = {
+        x1: slice.side === 'west' ? x0 + sliceWidth : x1 - sliceWidth,
+        x2: slice.side === 'west' ? x0 + sliceWidth : x1 - sliceWidth,
+        y1: y0 - 6,
+        y2: y1 + 6
+      };
+    }
+
+    layer.append('rect')
+      .attr('class', 'ams-state-split')
+      .attr('data-timezone', slice.timezone)
+      .attr('data-fips', fips)
+      .attr('x', rectX)
+      .attr('y', rectY)
+      .attr('width', rectWidth)
+      .attr('height', rectHeight)
+      .attr('fill', AMS_TZ_COLORS[slice.timezone] || '#dbe9db')
+      .attr('clip-path', `url(#${clipId})`)
+      .on('click', () => setAmsTimezoneFilter(slice.timezone));
+
+    if (line) {
+      layer.append('line')
+        .attr('class', 'ams-state-split-line')
+        .attr('x1', line.x1)
+        .attr('x2', line.x2)
+        .attr('y1', line.y1)
+        .attr('y2', line.y2)
+        .attr('clip-path', `url(#${clipId})`);
+    }
+  });
+}
+
+
+async function loadAmsUsAtlas() {
+  const atlasUrls = [
+    'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json',
+    'https://unpkg.com/us-atlas@3/states-10m.json'
+  ];
+  let lastError = null;
+  for (const url of atlasUrls) {
+    try {
+      const data = await d3.json(url);
+      if (data?.objects?.states) return data;
+      lastError = new Error('Invalid atlas payload');
+    } catch (err) {
+      lastError = err;
+      console.warn('AMS map source failed', url, err);
+    }
+  }
+  throw lastError || new Error('Unable to load U.S. map data');
+}
+
+async function initAmsMap() {
+  if (amsMapInitialized || !window.d3 || !window.topojson) return;
+  const svgEl = document.getElementById('amsUsMap');
+  if (!svgEl) return;
+  const loadingEl = document.getElementById('amsMapLoading');
+  amsSvg = d3.select(svgEl);
+  if (loadingEl) {
+    loadingEl.textContent = 'Loading U.S. map…';
+    loadingEl.classList.remove('hidden');
+  }
+
+  try {
+    const us = await loadAmsUsAtlas();
+    const allStates = topojson.feature(us, us.objects.states).features;
+    const lower48 = allStates.filter(d => !['02','15','72'].includes(String(d.id).padStart(2,'0')));
+
+    const width = 1200, height = 760;
+    amsSvg.selectAll('*').remove();
+    amsSvg.attr('viewBox', [0, 0, width, height]);
+
+    const defs = amsSvg.append('defs');
+    const shadow = defs.append('filter').attr('id', 'amsDrop');
+    shadow.append('feDropShadow')
+      .attr('dx', 0).attr('dy', 3).attr('stdDeviation', 5)
+      .attr('flood-color', '#000').attr('flood-opacity', 0.12);
+
+    const projection = d3.geoAlbersUsa();
+    projection.fitExtent([[6, 12], [width - 8, height - 14]], { type:'FeatureCollection', features: lower48 });
+    amsProjection = projection;
+    const path = d3.geoPath(projection);
+
+    amsZoomLayer = amsSvg.append('g').attr('class', 'ams-zoom-layer');
+    amsZoomLayer.append('rect')
+      .attr('x', 0).attr('y', 0).attr('width', width).attr('height', height)
+      .attr('fill', '#eef7ef');
+
+    const stateLayer = amsZoomLayer.append('g').attr('class', 'ams-state-layer');
+    stateLayer.selectAll('path.ams-state')
+      .data(lower48)
+      .join('path')
+      .attr('class', 'ams-state ams-state-zone')
+      .attr('data-fips', d => String(d.id).padStart(2,'0'))
+      .attr('data-timezone', d => {
+        const fips = String(d.id).padStart(2,'0');
+        return AMS_STATE_SPLITS[fips]?.base || AMS_STATE_TZ[fips] || '';
+      })
+      .attr('fill', d => {
+        const fips = String(d.id).padStart(2,'0');
+        const tz = AMS_STATE_SPLITS[fips]?.base || AMS_STATE_TZ[fips];
+        return AMS_TZ_COLORS[tz] || '#dbe9db';
+      })
+      .attr('d', path)
+      .on('click', (_, d) => {
+        const fips = String(d.id).padStart(2,'0');
+        const tz = AMS_STATE_SPLITS[fips]?.base || AMS_STATE_TZ[fips];
+        if (tz) setAmsTimezoneFilter(tz);
+      });
+
+    lower48.forEach(feature => addAmsStateSplit(defs, stateLayer, path, feature));
+
+    stateLayer.append('path')
+      .datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b && !['02','15','72'].includes(String(a.id).padStart(2,'0')) && !['02','15','72'].includes(String(b.id).padStart(2,'0'))))
+      .attr('class', 'ams-state-line')
+      .attr('d', path);
+
+    amsZoomLayer.append('path')
+      .datum(topojson.merge(us, us.objects.states.geometries.filter(g => !['02','15','72'].includes(String(g.id).padStart(2,'0')))))
+      .attr('class', 'ams-nation-outline')
+      .attr('d', path);
+
+    const labelLayer = amsZoomLayer.append('g').attr('aria-hidden', 'true');
+    [
+      { label:'Pacific', lon:-121, lat:41 },
+      { label:'Mountain', lon:-109, lat:40.5 },
+      { label:'Central', lon:-96.5, lat:38.5 },
+      { label:'Eastern', lon:-82.5, lat:38.5 }
+    ].forEach(tz => {
+      const pt = projection([tz.lon, tz.lat]);
+      if (!pt) return;
+      labelLayer.append('text')
+        .attr('class', 'ams-tz-label')
+        .attr('x', pt[0])
+        .attr('y', pt[1])
+        .attr('text-anchor', 'middle')
+        .text(tz.label);
+    });
+
+    const stateLabelLayer = amsZoomLayer.append('g').attr('aria-hidden', 'true');
+    lower48.forEach(feature => {
+      const fips = String(feature.id).padStart(2, '0');
+      const meta = AMS_STATE_LABELS[fips];
+      if (!meta) return;
+      const centroid = path.centroid(feature);
+      if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return;
+      const [[sx0, sy0], [sx1, sy1]] = path.bounds(feature);
+      const w = sx1 - sx0;
+      const h = sy1 - sy0;
+      const labelText = (w < 56 || h < 26) ? meta.abbr : meta.name;
+      const cls = (w < 36 || h < 18) ? 'ams-state-label tiny' : ((w < 56 || h < 26) ? 'ams-state-label small' : 'ams-state-label');
+      stateLabelLayer.append('text')
+        .attr('class', cls)
+        .attr('x', centroid[0])
+        .attr('y', centroid[1] + 4)
+        .attr('text-anchor', 'middle')
+        .text(labelText);
+    });
+
+    const markerLayer = amsZoomLayer.append('g').attr('class', 'ams-marker-layer').attr('filter', 'url(#amsDrop)');
+    amsMapMarkerSelection = markerLayer.selectAll('g')
+      .data(AMS_LOCATIONS_ARRAY, d => d.name)
+      .join('g')
+      .attr('class', 'ams-marker')
+      .attr('data-location', d => d.name)
+      .attr('data-timezone', d => d.timezone)
+      .on('click', (_, d) => selectAmsLocation(d.name));
+
+    amsMapMarkerSelection.append('circle')
+      .attr('r', 7.5)
+      .attr('fill', d => AMS_TZ_COLORS[d.timezone] || '#2e7d32');
+
+    amsMapMarkerSelection.append('title')
+      .text(d => `${d.name} • ${[d.city, d.state].filter(Boolean).join(', ')}`);
+
+    updateAmsMarkerPositions();
+
+    amsZoomBehavior = d3.zoom()
+      .scaleExtent([1, 8])
+      .on('zoom', (event) => {
+        amsZoomLayer.attr('transform', event.transform);
+      });
+
+    amsSvg.call(amsZoomBehavior)
+      .call(amsZoomBehavior.transform, d3.zoomIdentity.translate(-118, -66).scale(1.34));
+
+    amsMapInitialized = true;
+    applyAmsFilters();
+
+    
+
+    if (loadingEl) loadingEl.classList.add('hidden');
+  } catch (err) {
+    console.error('AMS map failed to load', err);
+    amsMapInitialized = false;
+    if (loadingEl) {
+      loadingEl.textContent = 'Map failed to load — refresh the page';
+      loadingEl.classList.remove('hidden');
+    }
+  }
+}
+
+window.amsZoomIn = function() {
+  if (amsSvg && amsZoomBehavior) amsSvg.transition().duration(180).call(amsZoomBehavior.scaleBy, 1.22);
+};
+
+window.amsZoomOut = function() {
+  if (amsSvg && amsZoomBehavior) amsSvg.transition().duration(180).call(amsZoomBehavior.scaleBy, 1 / 1.22);
+};
+
+window.amsZoomReset = function() {
+  if (amsSvg && amsZoomBehavior) amsSvg.transition().duration(250).call(amsZoomBehavior.transform, d3.zoomIdentity.translate(-118, -66).scale(1.34));
+};
+
+function filterAmsLocations() {
+  applyAmsFilters();
+}
+
+function setAmsTimezoneFilter(tz) {
+  amsTimezoneFilter = tz;
+  document.querySelectorAll('[data-tz-filter]').forEach(btn => btn.classList.toggle('active', btn.dataset.tzFilter === tz));
+  applyAmsFilters();
+}
+
+function applyAmsFilters() {
+  const q = (document.getElementById('amsSearchInput')?.value || '').trim().toLowerCase();
+
+  document.querySelectorAll('.ams-loc-btn').forEach(el => {
+    const tzMatch = amsTimezoneFilter === 'all' || el.dataset.timezone === amsTimezoneFilter;
+    const qMatch = !q || (el.dataset.search || '').includes(q);
+    el.style.display = (tzMatch && qMatch) ? '' : 'none';
+  });
+
+  if (amsMapMarkerSelection) {
+    amsMapMarkerSelection
+      .attr('display', d => {
+        const hasCoords = Number.isFinite(d.lat) && Number.isFinite(d.lon);
+        const tzMatch = amsTimezoneFilter === 'all' || d.timezone === amsTimezoneFilter;
+        const qMatch = !q || (AMS_LOCATIONS[d.name]?.searchText || '').includes(q);
+        return (hasCoords && tzMatch && qMatch) ? null : 'none';
+      })
+      .classed('active', d => d.name === selectedAmsLocation);
+  }
+
+  if (amsSvg) {
+    amsSvg.selectAll('.ams-state-zone, .ams-state-split').classed('dimmed', function() {
+      const tz = this.getAttribute('data-timezone');
+      return amsTimezoneFilter !== 'all' && tz !== amsTimezoneFilter;
+    });
+  }
+}
+
+function censusGeocodeJsonp(place) {
+  return new Promise((resolve, reject) => {
+    const callbackName = `amsCensusCb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const script = document.createElement('script');
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error('Geocoder timeout'));
+    }, 15000);
+
+    function cleanup() {
+      clearTimeout(timeout);
+      if (window[callbackName]) delete window[callbackName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[callbackName] = (payload) => {
+      cleanup();
+      const match = payload?.result?.addressMatches?.[0];
+      if (match?.coordinates) {
+        resolve({
+          lat: Number(match.coordinates.y),
+          lon: Number(match.coordinates.x),
+          matchedAddress: match.matchedAddress || place
+        });
+      } else {
+        reject(new Error('No geocode match'));
+      }
+    };
+
+    script.onerror = () => {
+      cleanup();
+      reject(new Error('Geocoder request failed'));
+    };
+
+    script.src = 'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?benchmark=Public_AR_Current&format=jsonp&callback='
+      + callbackName + '&address=' + encodeURIComponent(place);
+
+    document.body.appendChild(script);
+  });
+}
+
+async function resolveAmsGeocodes() {
+  setAmsGeoStatus('', false);
+  return;
+}
+
+(function initAmsLocations() {
+  buildAmsLocationButtons();
+  updateAmsCounts();
+  setAmsTimezoneFilter('all');
+}());
+
 
 // Build office buttons
 (function buildOfficeButtons() {
@@ -1648,19 +4615,13 @@ function aptFloorStr(f) {
   return `the ${f}${ordinal(f)} floor`;
 }
 function isApt(t) { return t === "Apartment" || t === "Condo" || t === "Office"; }
-function numberToWord(n) {
-  const num = parseInt(n);
-  const words = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
-  if (!isNaN(num) && num >= 0 && num <= 20) return words[num];
-  return String(n);
-}
 function fmt$(n) { return "$" + n.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
 /* ── TAB SWITCHING ── */
 let activeTab = "full";
 function switchTab(tab) {
   activeTab = tab;
-  ["full","crew","calc","od","backhaul","reg","sop","faq","training","stor","regmkt","offices","gunsafe","commission"].forEach(t => {
+  ["full","crew","calc","od","backhaul","reg","sop","faq","training","stor","regmkt","ams","offices","gunsafe","commission"].forEach(t => {
     $$("tab-" + t)?.classList.toggle("active", t === tab);
     const pane = $$(t + "-pane");
     if (pane) pane.style.display = t === tab ? "block" : "none";
@@ -1676,9 +4637,12 @@ function switchTab(tab) {
   if ($$("training-pane")) $$("training-pane").classList.toggle("active", tab === "training");
   if ($$("stor-pane"))     $$("stor-pane").classList.toggle("active",     tab === "stor");
   if ($$("regmkt-pane"))   $$("regmkt-pane").classList.toggle("active",   tab === "regmkt");
+  if ($$("ams-pane"))      $$("ams-pane").classList.toggle("active",      tab === "ams");
   if ($$("offices-pane"))  $$("offices-pane").classList.toggle("active",  tab === "offices");
   if ($$("gunsafe-pane"))  $$("gunsafe-pane").classList.toggle("active",  tab === "gunsafe");
   if ($$("commission-pane")) $$("commission-pane").classList.toggle("active", tab === "commission");
+  document.body.classList.toggle("ams-focus", tab === "ams");
+  if (tab === "ams") initAmsMap();
 }
 
 /* ── LONG DISTANCE CALCULATOR ── */
@@ -2304,16 +5268,15 @@ function generateNotes() {
   if (truckLabel) summaryParts.push(truckLabel);
   push(summaryParts.join(", "));
 
-  function locSummary(type, floors, addSqft) {
+  function locSummary(type, floors) {
     if (type === "Storage") return "storage";
-    const sqftStr = addSqft && val("sqft") ? ` ${val("sqft")} sqft` : "";
     if (isApt(type)) {
       const floorStr = floors === "4+" ? "4th floor or higher" : `${floors}${ordinal(floors)} floor`;
-      return `${floorStr}${sqftStr} ${type.toLowerCase()}`;
+      return `${floorStr} ${type.toLowerCase()}`;
     }
-    return `${storyStr(floors).toLowerCase()}${sqftStr} ${type.toLowerCase()}`;
+    return `${storyStr(floors).toLowerCase()} ${type.toLowerCase()}`;
   }
-  push(`From ${locSummary(originType, originFloors, true)} to ${locSummary(destType, destFloors)}`);
+  push(`From ${locSummary(originType, originFloors)} to ${locSummary(destType, destFloors)}`);
 
   const details = [];
   if (packing !== "Standard Materials") details.push(`${packing} Pack`);
@@ -2340,16 +5303,15 @@ function generateNotes() {
   if (chk("longWalk"))         details.push(`Long Walk - ${val("longWalkLocation")}`);
   if (chk("sharedElevator"))   details.push(`Shared Elevator - ${val("elevatorLocation")}`);
   if (chk("extraStop"))        details.push(`Extra Stop - ${val("extraStopType")}`);
-  if (chk("overnightStorage")) { const nights = val("overnightNights") || "1"; details.push(`Overnight Storage - ${numberToWord(nights)} night${nights !== "1" ? "s" : ""}`); }
+  if (chk("overnightStorage")) details.push(`Overnight Storage - ${val("overnightNights") || "1"} night(s)`);
   if (chk("specialtyItems")) {
     const specialtyType = val("specialtyType");
     const specialtyItem = specialtyType === "Other" ? val("specialtyOtherText") : specialtyType;
     const specialtyFloor = val("specialtyFloor");
-    details.push(`Specialty Item - ${specialtyItem} - ${specialtyFloor}`);
+    details.push(`Specialty Item - ${specialtyItem} (${specialtyFloor})`);
   }
   if (chk("coi"))              details.push("COI Required");
   if (chk("applianceSwap")) { const apps = getApplianceList(); details.push("Appliance Swap" + (apps.length ? ": " + apps.join(" & ") : "")); }
-  if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) details.push(`Rooms Not Moving: ${rnm.join(", ")}`); }
   if (chk("intoStorage"))      details.push("Into AMS Storage");
   if (chk("storageOut"))       details.push("Out of AMS Storage");
   if (details.length) push(details.join(", "));
@@ -2373,31 +5335,24 @@ function generateNotes() {
     blank();
     // Location/floor note
     if (!chk("laborOnly")) {
-      const sqftNote = val("sqft") ? ` ${val("sqft")} sqft` : "";
       if (isApt(originType) || isApt(destType)) {
         const elevNote = chk("sharedElevator") ? "" : " This estimate is made assuming there is no long walk and if an elevator is required it will be dedicated to the AMS crew only. Non-dedicated elevators and long walks can and will change the scope of the move and void any given Binding estimate.";
-        const fromStr = isApt(originType) ? `an${sqftNote} ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}` : `a ${storyStr(originFloors)}${sqftNote} ${originType.toLowerCase()}`;
+        const fromStr = isApt(originType) ? `an ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}` : `a ${storyStr(originFloors)} ${originType.toLowerCase()}`;
         const toStr   = isApt(destType)   ? `a new ${destType.toLowerCase()} on ${aptFloorStr(destFloors)}`  : `a new ${storyStr(destFloors)} ${destType.toLowerCase()}`;
         push(`This estimate is made based off moving out of ${fromStr} to ${toStr}.${elevNote}`);
         blank();
       } else {
-        push(`This estimate is made based off moving out of a ${storyStr(originFloors)}${sqftNote} home to a new ${storyStr(destFloors)} home. There is no long walk/steep driveway factored into this estimate.`);
+        push(`This estimate is made based off moving out of a ${storyStr(originFloors)} home to a new ${storyStr(destFloors)} home. There is no long walk/steep driveway factored into this estimate.`);
         blank();
       }
     }
+    if (chk("longWalk"))       { push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); blank(); }
+    if (chk("sharedElevator")) { push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); blank(); }
     if (packing === "Full")    { push("This estimate includes a full pack. Full packing includes packing items into AMS boxes. AMS cannot pack any live plants, firearms, animals, chemicals, liquids, alcohol, cash, or jewelry."); blank(); }
     else if (packing === "Partial") { push("This estimate includes a partial pack – the packing includes the boxes and rooms where cartons are labeled AMS on the cube sheet below. Additional packing on move day can be provided at an additional cost based on time and materials needed."); blank(); }
-    // Consolidated add-on sentences for OD
-    const odAddOns = [];
-    if (chk("longWalk"))       { odAddOns.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
-    if (chk("sharedElevator")) { odAddOns.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
-    if (chk("unpacking"))      { odAddOns.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
-    if (chk("extraStop"))     { odAddOns.push(`This estimate includes a second ${val("extraStopType")}.`); }
-    if (chk("overnightStorage")) { const nights = val("overnightNights") || "1"; odAddOns.push(`This estimate includes ${numberToWord(nights)} night${nights !== "1" ? "s" : ""} of overnight storage.`); }
-    if (chk("coi"))            { odAddOns.push("This move requires a COI."); }
-    if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; odAddOns.push(`This estimate includes an Appliance Swap. Taking ${appStr} from origin to destination, taking ${appStr} from destination back to origin.`); }
-    if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) odAddOns.push(`Rooms not moving: ${rnm.join(", ")}.`); }
-    if (odAddOns.length) { push(odAddOns.join(" ")); blank(); }
+    if (chk("unpacking"))      { push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); blank(); }
+    if (chk("coi"))            { push("This move requires a COI."); blank(); }
+    if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; push(`This estimate includes an Appliance Swap. Taking (${appStr}) from origin to destination, taking (${appStr}) from destination back to origin.`); blank(); }
     return lines;
   }
 
@@ -2457,6 +5412,18 @@ function generateNotes() {
     blank();
   }
 
+  if (chk("specialtyItems")) {
+    const specialtyType = val("specialtyType");
+    const specialtyItem = specialtyType === "Other" ? val("specialtyOtherText") : specialtyType;
+    const specialtyFloor = val("specialtyFloor");
+    let specialtyText = `Special handling required for ${specialtyItem} on ${specialtyFloor}`;
+    if (specialtyType === "Gun Safe" && val("specialtyWeight")) {
+      specialtyText += ` - ${val("specialtyWeight")} lbs`;
+    }
+    push(specialtyText + ".");
+    blank();
+  }
+
   if (chk("parking")) {
     const parkingOrigin = val("parkingOrigin");
     const parkingOriginDetail = parkingOrigin === "Other" ? val("parkingOriginText") : parkingOrigin;
@@ -2477,13 +5444,13 @@ function generateNotes() {
   if (chk("intoStorage")) {
     const vaults = val("storageVaults") || "X";
     const rate   = val("storageRate")   || "X";
-    push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost – that will be determined once a date and destination are provided. There is no direct access to items in AMS storage. Storage is billed separately ${vaults} vaults are estimated at $${rate} a month totaling $${rate} per month.`);
+    push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost – that will be determined once a date and destination are provided. There is no direct access to items in AMS storage. Storage is billed separately (${vaults}) vaults are estimated at ($${rate}) a month totaling ($${rate}) per month.`);
     blank();
   }
 
   // Storage Out
   if (chk("storageOut")) {
-    push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is ${val("storageOutCID") || "X"}.`);
+    push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is (${val("storageOutCID") || "X"}).`);
     blank();
   }
 
@@ -2498,7 +5465,7 @@ function generateNotes() {
   } else {
     // Standard 26ft block
     if (isBinding) {
-      const tc = numTrucks;
+      const tc = `(${numTrucks})`;
       const tp = numTrucks !== "1" ? "s" : "";
       push(`This ${estimateType} estimate is for moving the items from the attached inventory list with ${tc} 26' AMS moving truck${tp} each day, not to exceed the inventoried items or the time constraints of the estimate, at 26,000 Lbs. GVW. If there are any additional weight, items or time required to complete the move, it will be at an additional cost or the responsibility of the customer to move.`);
       blank();
@@ -2520,7 +5487,7 @@ function generateNotes() {
   // Trucks to Capacity (only if NOT 30ft)
   if (chk("trucksToCapacity") && !use30ft) {
     const n = parseInt(numTrucks);
-    const truckWord = n === 1 ? "a 26 foot box truck" : `${numberToWord(n)} 26 foot box trucks`;
+    const truckWord = n === 1 ? "a 26 foot box truck" : `(${n}) 26 foot box trucks`;
     const truckRef  = n === 1 ? "One truck is" : `Each truck is`;
     push(`This estimate is based on ${truckWord} to capacity. ${truckRef} defined as a 26,000 GVW. AMS is not responsible for any overflow. In the event a truck is overweight, items will be returned to origin until the truck is at the maximum legal weight, or an additional truck will be provided at an additional cost.`);
     blank();
@@ -2530,7 +5497,6 @@ function generateNotes() {
   if (!chk("laborOnly")) {
     const originIsStorage = originType === "Storage";
     const destIsStorage   = destType   === "Storage";
-    const sqftNote = val("sqft") ? ` ${val("sqft")} sqft` : "";
 
     let fromStr, toStr;
 
@@ -2549,9 +5515,9 @@ function generateNotes() {
       }
     } else if (isApt(originType)) {
       const article = originType === "Apartment" ? "an" : "a";
-      fromStr = `${article}${sqftNote} ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}`;
+      fromStr = `${article} ${originType.toLowerCase()} on ${aptFloorStr(originFloors)}`;
     } else {
-      fromStr = `a ${storyStr(originFloors)}${sqftNote} ${originType.toLowerCase()}`;
+      fromStr = `a ${storyStr(originFloors)} ${originType.toLowerCase()}`;
     }
 
     if (destIsStorage) {
@@ -2575,18 +5541,8 @@ function generateNotes() {
     blank();
   }
 
-  if (packing === "Full") {
-    push("This estimate includes a full pack. Full packing includes packing items into AMS boxes. AMS cannot pack any live plants, firearms, animals, chemicals, liquids, alcohol, cash, or jewelry.");
-    blank();
-  } else if (packing === "Partial") {
-    push("This estimate includes a partial pack – the packing includes the boxes and rooms where cartons are labeled AMS on the cube sheet below. Additional packing on move day can be provided at an additional cost based on time and materials needed.");
-    blank();
-  }
-
-  // Consolidated add-on sentences — all on one line
-  const addOnSentences = [];
-  if (chk("longWalk"))      { addOnSentences.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
-  if (chk("sharedElevator")){ addOnSentences.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
+  if (chk("longWalk"))      { push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); blank(); }
+  if (chk("sharedElevator")){ push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); blank(); }
   if (chk("elevReservation")) {
     const loc     = val("elevResLocation");
     const origWin = val("elevResOriginWindow");
@@ -2595,33 +5551,33 @@ function generateNotes() {
       const parts = [];
       if (origWin) parts.push(`Origin: ${origWin}`);
       if (destWin) parts.push(`Destination: ${destWin}`);
-      addOnSentences.push(`This move requires an elevator reservation at both origin and destination.${parts.length ? " " + parts.join(" / ") + "." : ""}`);
+      push(`This move requires an elevator reservation at both origin and destination.${parts.length ? " " + parts.join(" / ") + "." : ""}`);
     } else if (loc === "Origin") {
-      addOnSentences.push(`This move requires an elevator reservation at the origin${origWin ? ` (${origWin})` : ""}.`);
+      push(`This move requires an elevator reservation at the origin${origWin ? ` (${origWin})` : ""}.`);
     } else {
-      addOnSentences.push(`This move requires an elevator reservation at the destination${destWin ? ` (${destWin})` : ""}.`);
+      push(`This move requires an elevator reservation at the destination${destWin ? ` (${destWin})` : ""}.`);
     }
+    blank();
   }
-  if (chk("unpacking"))     { addOnSentences.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
-  if (chk("extraStop"))     { addOnSentences.push(`This estimate includes a second ${val("extraStopType")}.`); }
+
+  if (packing === "Full") {
+    push("This estimate includes a full pack. Full packing includes packing items into AMS boxes. AMS cannot pack any live plants, firearms, animals, chemicals, liquids, alcohol, cash, or jewelry.");
+    blank();
+  } else if (packing === "Partial") {
+    push("This estimate includes a partial pack – the packing includes the boxes and rooms where cartons are labeled AMS on the cube sheet below. Additional packing on move day can be provided at an additional cost based on time and materials needed.");
+    blank();
+  }
+
+  if (chk("unpacking"))     { push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); blank(); }
+  if (chk("extraStop"))     { push(`This estimate includes a second (${val("extraStopType")}).`); blank(); }
   if (chk("overnightStorage")) {
     const nights = val("overnightNights") || "1";
-    addOnSentences.push(`This estimate includes ${numberToWord(nights)} night${nights !== "1" ? "s" : ""} of overnight storage.`);
+    push(`This estimate includes (${nights}) night${nights !== "1" ? "s" : ""} of overnight storage.`);
+    blank();
   }
-  if (chk("specialtyItems")) {
-    const specialtyType = val("specialtyType");
-    const specialtyItem = specialtyType === "Other" ? val("specialtyOtherText") : specialtyType;
-    const specialtyFloor = val("specialtyFloor");
-    let specialtyText = `Special handling required for ${specialtyItem} on ${specialtyFloor}`;
-    if (specialtyType === "Gun Safe" && val("specialtyWeight")) {
-      specialtyText += ` - ${val("specialtyWeight")} lbs`;
-    }
-    addOnSentences.push(specialtyText + ".");
-  }
-  if (chk("coi")) { addOnSentences.push("This move requires a COI."); }
-  if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; addOnSentences.push(`This estimate includes an Appliance Swap. Taking ${appStr} from origin to destination, taking ${appStr} from destination back to origin.`); }
-  if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) addOnSentences.push(`Rooms not moving: ${rnm.join(", ")}.`); }
-  if (addOnSentences.length) { push(addOnSentences.join(" ")); blank(); }
+
+  if (chk("coi")) { push("This move requires a COI."); blank(); }
+  if (chk("applianceSwap")) { const apps = getApplianceList(); const appStr = apps.length ? apps.join(" and ") : "appliances"; push(`This estimate includes an Appliance Swap. Taking (${appStr}) from origin to destination, taking (${appStr}) from destination back to origin.`); blank(); }
   if (chk("partialPacking")) {
     const packing = val("packing");
     if (packing === "Partial") {
@@ -2769,7 +5725,7 @@ function generateCrewNotes() {
   if (chk("trucksToCapacity"))              parts.push("trucks to capacity");
   if (chk("truck30ft"))                     parts.push("30ft truck");
 
-  function locLabel(type, floors, addSqft) {
+  function locLabel(type, floors) {
     if (type === "Storage") {
       const units = getStorageUnits();
       if (units.length === 0) return "storage";
@@ -2779,14 +5735,13 @@ function generateCrewNotes() {
       }
       return `${units.length} storage units`;
     }
-    const sqftStr = addSqft && val("sqft") ? ` ${val("sqft")} sqft` : "";
-    if (isApt(type)) return `${aptFloorStr(floors)}${sqftStr} ${type.toLowerCase()}`;
-    return `${storyStr(floors).toLowerCase()}${sqftStr} ${type.toLowerCase()}`;
+    if (isApt(type)) return `${aptFloorStr(floors)} ${type.toLowerCase()}`;
+    return `${storyStr(floors).toLowerCase()} ${type.toLowerCase()}`;
   }
 
   let sentence = parts.join(", ");
   sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-  sentence += ` – move from ${locLabel(originType, originFloors, true)} to ${locLabel(destType, destFloors)}`;
+  sentence += ` – move from ${locLabel(originType, originFloors)} to ${locLabel(destType, destFloors)}`;
 
   // If multiple storage units, list each one
   if (originType === "Storage") {
@@ -2820,7 +5775,6 @@ function generateCrewNotes() {
   if (chk("intoStorage"))      notes.push("moving into AMS storage");
   if (chk("storageOut"))       notes.push("moving out of AMS storage");
   if (chk("unpacking"))        notes.push("unpacking included");
-  if (chk("roomsNotMoving")) { const rnm = getRoomsNotMoving(); if (rnm.length) notes.push(`rooms not moving: ${rnm.join(", ")}`); }
 
   if (notes.length) sentence += " – " + notes.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(", ");
   return sentence;
@@ -2948,41 +5902,6 @@ function updateMultidayBoxes() {
     dayDiv.appendChild(select);
     container.appendChild(dayDiv);
   }
-}
-
-function syncRoomsNotMoving() {
-  const on = $$("roomsNotMoving").checked;
-  $$("roomsNotMovingOpts").style.display = on ? "block" : "none";
-  if (!on) {
-    ["rnmMasterBedroom","rnmBedroom2","rnmBedroom3","rnmBedroom4","rnmKitchen","rnmLivingRoom","rnmDiningRoom","rnmOffice","rnmGarage","rnmPatio","rnmAttic","rnmBasement","rnmOther"].forEach(id => { $$(id).checked = false; });
-    $$("rnmOtherText").value = "";
-    $$("rnmOtherInput").style.display = "none";
-  }
-  render();
-}
-
-function syncRnmOther() {
-  $$("rnmOtherInput").style.display = $$("rnmOther").checked ? "block" : "none";
-  if (!$$("rnmOther").checked) $$("rnmOtherText").value = "";
-  render();
-}
-
-function getRoomsNotMoving() {
-  const rooms = [];
-  if (chk("rnmMasterBedroom")) rooms.push("Master Bedroom");
-  if (chk("rnmBedroom2"))      rooms.push("Bedroom 2");
-  if (chk("rnmBedroom3"))      rooms.push("Bedroom 3");
-  if (chk("rnmBedroom4"))      rooms.push("Bedroom 4");
-  if (chk("rnmKitchen"))       rooms.push("Kitchen");
-  if (chk("rnmLivingRoom"))    rooms.push("Living Room");
-  if (chk("rnmDiningRoom"))    rooms.push("Dining Room");
-  if (chk("rnmOffice"))        rooms.push("Office");
-  if (chk("rnmGarage"))        rooms.push("Garage");
-  if (chk("rnmPatio"))         rooms.push("Patio");
-  if (chk("rnmAttic"))         rooms.push("Attic");
-  if (chk("rnmBasement"))      rooms.push("Basement");
-  if (chk("rnmOther") && val("rnmOtherText")) rooms.push(val("rnmOtherText"));
-  return rooms;
 }
 
 function syncSpecialtyItems() {
@@ -3330,18 +6249,15 @@ function regUpdate() {
   if (chk("furnitureOnly")) { lines.push(""); lines.push("This estimate is only for moving furniture in the home, AMS is not responsible for moving any boxes or storage bins."); }
   if (chk("partialMove"))   { lines.push(""); lines.push("Partial move - This estimate includes moving Items listed in the cube sheet below. If the shipper requests additional services, they are at an additional cost – based upon the listed hourly rate and the materials needed."); }
   if (chk("trucksToCapacity")) { lines.push(""); lines.push("This estimate is based on a 26 foot box truck to capacity. One truck is defined as a 26,000 GVW. AMS is not responsible for any overflow. In the event a truck is overweight, items will be returned to origin until the truck is at the maximum legal weight, or an additional truck will be provided at an additional cost."); }
+  if (chk("longWalk"))      { lines.push(""); lines.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
+  if (chk("sharedElevator")){ lines.push(""); lines.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
   if (packing === "Full")   { lines.push(""); lines.push("This estimate includes a full pack. Full packing includes packing items into AMS boxes. AMS cannot pack any live plants, firearms, animals, chemicals, liquids, alcohol, cash, or jewelry."); }
-  // Consolidated add-on sentences for reg notes
-  const regAddOns = [];
-  if (chk("longWalk"))      { regAddOns.push(`This estimate includes a long walk at ${val("longWalkLocation")} and has been factored into the labor clock accordingly.`); }
-  if (chk("sharedElevator")){ regAddOns.push(`This estimate includes a shared elevator at ${val("elevatorLocation")} and has been factored into the labor clock accordingly.`); }
-  if (chk("unpacking"))     { regAddOns.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
-  if (chk("extraStop"))     { regAddOns.push(`This estimate includes a second ${val("extraStopType")}.`); }
-  if (chk("overnightStorage")) { const n = val("overnightNights")||"1"; regAddOns.push(`This estimate includes ${numberToWord(n)} night${n!=="1"?"s":""} of overnight storage.`); }
-  if (chk("coi"))           { regAddOns.push("This move requires a COI."); }
-  if (regAddOns.length) { lines.push(""); lines.push(regAddOns.join(" ")); }
-  if (chk("intoStorage"))   { const v=val("storageVaults")||"X", r=val("storageRate")||"X"; lines.push(""); lines.push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost. Storage is billed separately ${v} vaults are estimated at $${r} a month.`); }
-  if (chk("storageOut"))    { lines.push(""); lines.push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is ${val("storageOutCID")||"X"}.`); }
+  if (chk("unpacking"))     { lines.push(""); lines.push("This estimate includes taking items out of AMS packed boxes, placing on the nearest flat surface, and removal of debris."); }
+  if (chk("extraStop"))     { lines.push(""); lines.push(`This estimate includes a second (${val("extraStopType")}).`); }
+  if (chk("overnightStorage")) { const n = val("overnightNights")||"1"; lines.push(""); lines.push(`This estimate includes (${n}) night${n!=="1"?"s":""} of overnight storage.`); }
+  if (chk("coi"))           { lines.push(""); lines.push("This move requires a COI."); }
+  if (chk("intoStorage"))   { const v=val("storageVaults")||"X", r=val("storageRate")||"X"; lines.push(""); lines.push(`This estimate is for a move into AMS storage. Move out of storage is a separate cost. Storage is billed separately (${v}) vaults are estimated at ($${r}) a month.`); }
+  if (chk("storageOut"))    { lines.push(""); lines.push(`This estimate is for a move out of AMS storage. The CID of the move into Storage is (${val("storageOutCID")||"X"}).`); }
 
   lines.push("");
   lines.push("This estimate is for moving the items from the attached inventory list with 2 26' AMS moving trucks each day, not to exceed the inventoried items or the time constraints of the estimate, at 26,000 Lbs. GVW. If there are any additional weight, items or time required to complete the move, it will be at an additional cost or the responsibility of the customer to move.");
